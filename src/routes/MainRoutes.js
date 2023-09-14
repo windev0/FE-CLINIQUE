@@ -16,6 +16,10 @@ const Color = Loadable(lazy(() => import('pages/components-overview/Color')));
 const Shadow = Loadable(lazy(() => import('pages/components-overview/Shadow')));
 const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons')));
 
+// render patient pages
+const AddPatient = Loadable(lazy(() => import('pages/components-overview/patient/AddPatient')))
+const ListPatient = Loadable(lazy(() => import('pages/components-overview/patient/ListPatient')))
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -54,6 +58,19 @@ const MainRoutes = {
     {
       path: 'icons/ant',
       element: <AntIcons />
+    },
+    {
+      path: 'patient',
+      children: [
+        {
+          path: 'ajouter',
+          element: <AddPatient />
+        },
+        {
+          path: 'lister',
+          element: <ListPatient />
+        }
+      ]
     }
   ]
 };

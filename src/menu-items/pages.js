@@ -10,8 +10,8 @@ const icons = {
 // ==============================|| MENU ITEMS - EXTRA PAGES ||============================== //
 
 const pages = {
-  id: 'authentication',
-  title: 'Authentication',
+  id: 'authentification',
+  title: 'Authentification',
   type: 'group',
   children: [
     {

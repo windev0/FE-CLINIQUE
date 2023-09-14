@@ -15,7 +15,8 @@ import {
   InputLabel,
   OutlinedInput,
   Stack,
-  Typography
+  Typography,
+  Select
 } from '@mui/material';
 
 // third party
@@ -61,6 +62,7 @@ const AuthRegister = () => {
           email: '',
           company: '',
           password: '',
+          user: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -86,7 +88,7 @@ const AuthRegister = () => {
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="firstname-signup">First Name*</InputLabel>
+                  <InputLabel htmlFor="firstname-signup">Nom*</InputLabel>
                   <OutlinedInput
                     id="firstname-login"
                     type="firstname"
@@ -107,7 +109,7 @@ const AuthRegister = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="lastname-signup">Last Name*</InputLabel>
+                  <InputLabel htmlFor="lastname-signup">Prénom(s)*</InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.lastname && errors.lastname)}
@@ -127,9 +129,9 @@ const AuthRegister = () => {
                   )}
                 </Stack>
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} md={6}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="company-signup">Company</InputLabel>
+                  <InputLabel htmlFor="company-signup">Address</InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.company && errors.company)}
@@ -144,6 +146,29 @@ const AuthRegister = () => {
                   {touched.company && errors.company && (
                     <FormHelperText error id="helper-text-company-signup">
                       {errors.company}
+                    </FormHelperText>
+                  )}
+                </Stack>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Stack spacing={1}>
+                  <InputLabel htmlFor="company-signup">Type d{`'`}utilisateur</InputLabel>
+                  <Select fullWidth id="lastname-signup"></Select>
+                  {/* <OutlinedInput
+                    fullWidth
+                    error={Boolean(touched.lastname && errors.lastname)}
+                    id="lastname-signup"
+                    type="lastname"
+                    value={values.lastname}
+                    name="lastname"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    placeholder="Doe"
+                    inputProps={{}}
+                  /> */}
+                  {touched.lastname && errors.lastname && (
+                    <FormHelperText error id="helper-text-lastname-signup">
+                      {errors.lastname}
                     </FormHelperText>
                   )}
                 </Stack>
@@ -172,7 +197,7 @@ const AuthRegister = () => {
               </Grid>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="password-signup">Password</InputLabel>
+                  <InputLabel htmlFor="password-signup">Mot de passe</InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.password && errors.password)}
@@ -222,9 +247,9 @@ const AuthRegister = () => {
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2">
-                  By Signing up, you agree to our &nbsp;
+                  j'accepte les   &nbsp;
                   <Link variant="subtitle2" component={RouterLink} to="#">
-                    Terms of Service
+                    conditions d utilisation
                   </Link>
                   &nbsp; and &nbsp;
                   <Link variant="subtitle2" component={RouterLink} to="#">
@@ -240,13 +265,13 @@ const AuthRegister = () => {
               <Grid item xs={12}>
                 <AnimateButton>
                   <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
-                    Create Account
+                    Créer maintenant
                   </Button>
                 </AnimateButton>
               </Grid>
               <Grid item xs={12}>
                 <Divider>
-                  <Typography variant="caption">Sign up with</Typography>
+                  <Typography variant="caption">Se connecter avec</Typography>
                 </Divider>
               </Grid>
               <Grid item xs={12}>
