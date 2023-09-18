@@ -30,12 +30,20 @@ import { strengthColor, strengthIndicator } from 'utils/password-strength';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import { MenuItem } from '../../../../node_modules/@mui/material/index';
+// import { useQuery } from '../../../../node_modules/@tanstack/react-query/build/lib/useQuery';
+import axios from '../../../../node_modules/axios/index';
 
 // ============================|| FIREBASE - REGISTER ||============================ //
 
 const AuthRegister = () => {
   const [level, setLevel] = useState();
   const [showPassword, setShowPassword] = useState(false);
+  const userType = {
+    doctor: 'MEDECIN',
+    nurse: 'INFIRMIER'
+  };
+
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -49,9 +57,35 @@ const AuthRegister = () => {
     setLevel(strengthColor(temp));
   };
 
+  const handleType = (type) => {
+    return type;
+  }
   useEffect(() => {
     changePassword('');
   }, []);
+
+  // const { isLoading, error, data } = useQuery({
+  //   queryKey: ['repoData'],
+  //   queryFn: () => handleSubmit()
+  // })
+  const OhandleSubmit = (values) => {
+    const user = {
+      firstName: values.firstname,
+      lastName: values.lastname,
+      address: values.address, 
+      password: values.password,
+      email: values.email,
+      type: values.type
+    }
+    console.log('user: ',user)
+    axios.post('http://localhost:3001/auth/register', user)
+      .then((response) => console.log(response))
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    console.log(values)
+  }
 
   return (
     <>
@@ -60,16 +94,17 @@ const AuthRegister = () => {
           firstname: '',
           lastname: '',
           email: '',
-          company: '',
+          address: '',
           password: '',
-          user: '',
+          type: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          firstname: Yup.string().max(255).required('First Name is required'),
-          lastname: Yup.string().max(255).required('Last Name is required'),
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required')
+          firstname: Yup.string().max(255).required('Le nom est obligatoire'),
+          lastname: Yup.string().max(255).required('Le prénom est obligatoire'),
+          type: Yup.string().max(255).required("Le type d'utilisateur est obligatoire"),
+          email: Yup.string().email('Doit etre un email valide').max(255).required('Email est obligatoire'),
+          password: Yup.string().max(255).required('Mot de passe est obligatoire')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
@@ -84,7 +119,7 @@ const AuthRegister = () => {
         }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-          <form noValidate onSubmit={handleSubmit}>
+          <form noValidate onSubmit={handleSubmit} method='POST' action='submit'>
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
                 <Stack spacing={1}>
@@ -96,7 +131,7 @@ const AuthRegister = () => {
                     name="firstname"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder="John"
+                    placeholder="AWOUNO"
                     fullWidth
                     error={Boolean(touched.firstname && errors.firstname)}
                   />
@@ -119,7 +154,7 @@ const AuthRegister = () => {
                     name="lastname"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder="Doe"
+                    placeholder="Kosi Winner"
                     inputProps={{}}
                   />
                   {touched.lastname && errors.lastname && (
@@ -131,51 +166,52 @@ const AuthRegister = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="company-signup">Address</InputLabel>
+                  <InputLabel htmlFor="address-signup">Address</InputLabel>
                   <OutlinedInput
                     fullWidth
-                    error={Boolean(touched.company && errors.company)}
-                    id="company-signup"
-                    value={values.company}
-                    name="company"
+                    error={Boolean(touched.address && errors.address)}
+                    id="address-signup"
+                    value={values.address}
+                    name="address"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder="Demo Inc."
+                    placeholder="Kodjoviakopé"
                     inputProps={{}}
                   />
-                  {touched.company && errors.company && (
-                    <FormHelperText error id="helper-text-company-signup">
-                      {errors.company}
+                  {touched.address && errors.address && (
+                    <FormHelperText error id="helper-text-address-signup">
+                      {errors.address}
                     </FormHelperText>
                   )}
                 </Stack>
               </Grid>
               <Grid item xs={12} md={6}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="company-signup">Type d{`'`}utilisateur</InputLabel>
-                  <Select fullWidth id="lastname-signup"></Select>
-                  {/* <OutlinedInput
-                    fullWidth
-                    error={Boolean(touched.lastname && errors.lastname)}
-                    id="lastname-signup"
-                    type="lastname"
-                    value={values.lastname}
-                    name="lastname"
+                  <InputLabel htmlFor="Type-signup">Type d{`'`}utilisateur</InputLabel>
+                  <Select fullWidth
+                    labelId="Type d'utilisateur"
+                    id="UserType-signup"
+                    // value=
+                    label="type"
+                    name="type"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder="Doe"
                     inputProps={{}}
-                  /> */}
-                  {touched.lastname && errors.lastname && (
-                    <FormHelperText error id="helper-text-lastname-signup">
-                      {errors.lastname}
+                  >
+                    <MenuItem value={handleType(userType.doctor)}>{userType.doctor}</MenuItem>
+                    <MenuItem value={handleType(userType.nurse)}>{userType.nurse}</MenuItem>
+                  </Select>
+
+                  {touched.type && errors.type && (
+                    <FormHelperText error id="helper-text-type-signup">
+                      {errors.type}
                     </FormHelperText>
                   )}
                 </Stack>
               </Grid>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="email-signup">Email Address*</InputLabel>
+                  <InputLabel htmlFor="email-signup">Email*</InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.email && errors.email)}
@@ -185,7 +221,7 @@ const AuthRegister = () => {
                     name="email"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder="demo@company.com"
+                    placeholder="demo@address.com"
                     inputProps={{}}
                   />
                   {touched.email && errors.email && (
@@ -247,9 +283,9 @@ const AuthRegister = () => {
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2">
-                  j'accepte les   &nbsp;
+                  j{`'`}accepte les   &nbsp;
                   <Link variant="subtitle2" component={RouterLink} to="#">
-                    conditions d utilisation
+                    conditions d{`'`}utilisation
                   </Link>
                   &nbsp; and &nbsp;
                   <Link variant="subtitle2" component={RouterLink} to="#">
@@ -264,7 +300,7 @@ const AuthRegister = () => {
               )}
               <Grid item xs={12}>
                 <AnimateButton>
-                  <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
+                  <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" onClick={() => OhandleSubmit(values)} variant="contained" color="primary">
                     Créer maintenant
                   </Button>
                 </AnimateButton>
@@ -282,6 +318,7 @@ const AuthRegister = () => {
         )}
       </Formik>
     </>
+
   );
 };
 

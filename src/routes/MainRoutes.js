@@ -20,6 +20,10 @@ const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons'
 const AddPatient = Loadable(lazy(() => import('pages/components-overview/patient/AddPatient')))
 const ListPatient = Loadable(lazy(() => import('pages/components-overview/patient/ListPatient')))
 
+//render consultation pages
+const AddConsultation = Loadable(lazy(() => import('pages/components-overview/consultation/AddConsultation')));
+const ListConsultation = Loadable(lazy(() => import('pages/components-overview/consultation/ListConsultation')));
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -69,6 +73,19 @@ const MainRoutes = {
         {
           path: 'lister',
           element: <ListPatient />
+        }
+      ]
+    },
+    {
+      path: 'consultation',
+      children: [
+        {
+          path: 'ajouter',
+          element: <AddConsultation/>
+        },
+        {
+          path: 'lister',
+          element: <ListConsultation />
         }
       ]
     }

@@ -1,14 +1,14 @@
 // project import
-import pages from './pages';
+import Consultation from './consultation.pages';
 import dashboard from './dashboard';
-import utilities from './utilities';
-import support from './support';
+import Ordonnance from './ordonnances.pages';
+
 import patientPages from './patient.pages';
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-  items: [dashboard, patientPages, pages, utilities, support]
+  items: [dashboard, patientPages, Consultation, Ordonnance]
 };
 
 export default menuItems;

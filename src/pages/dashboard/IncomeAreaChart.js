@@ -89,7 +89,7 @@ const IncomeAreaChart = ({ slot }) => {
 
   const [series, setSeries] = useState([
     {
-      name: 'Page Views',
+      name: 'Page Vie',
       data: [0, 86, 28, 115, 48, 210, 136]
     },
     {
