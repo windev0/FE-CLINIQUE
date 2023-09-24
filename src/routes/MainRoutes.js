@@ -24,6 +24,10 @@ const ListPatient = Loadable(lazy(() => import('pages/components-overview/patien
 const AddConsultation = Loadable(lazy(() => import('pages/components-overview/consultation/AddConsultation')));
 const ListConsultation = Loadable(lazy(() => import('pages/components-overview/consultation/ListConsultation')));
 
+
+const AddOrdonnance = Loadable(lazy(() => import('pages/components-overview/ordonnance/AddOrdonance')));
+const ListOrdonnance = Loadable(lazy(() => import('pages/components-overview/ordonnance/ListOrdonnance')));
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -32,7 +36,7 @@ const MainRoutes = {
   children: [
     {
       path: '/',
-      element: <DashboardDefault />
+      element: <DashboardDefault /> 
     },
     {
       path: 'color',
@@ -81,11 +85,24 @@ const MainRoutes = {
       children: [
         {
           path: 'ajouter',
-          element: <AddConsultation/>
+          element: <AddConsultation />
         },
         {
           path: 'lister',
           element: <ListConsultation />
+        }
+      ]
+    },
+    {
+      path: 'ordonnance',
+      children: [
+        {
+          path: 'ajouter',
+          element: <AddOrdonnance />
+        },
+        {
+          path: 'lister',
+          element: <ListOrdonnance />
         }
       ]
     }

@@ -6,6 +6,7 @@ export const PATIENT_CONTEXT = createContext();
 const PatientProvider = ({ children }) => {
 
     const [patients, setPatients] = useState();
+    const [message, setMessage] = useState('');
     useEffect(() => {
         axios.get('http://localhost:3001/patient', {
             withCredentials: true,
@@ -16,7 +17,7 @@ const PatientProvider = ({ children }) => {
             });
 
     }, []);
-    const values = { patients };
+    const values = { patients, message, setMessage };
     return (< PATIENT_CONTEXT.Provider value={values} > {children}</PATIENT_CONTEXT.Provider>);
 }
 

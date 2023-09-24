@@ -5,6 +5,8 @@ import { GridToolbarExport } from '../../../../node_modules/@mui/x-data-grid/com
 import { IconButton } from '../../../../node_modules/@mui/material/index';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import EditIcon from '@mui/icons-material/Edit';
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 
 const handleEditClick = (id) => {
   // Ajoutez votre logique pour gérer l'édition d'une ligne avec l'ID donné.
@@ -23,7 +25,7 @@ const columns = [
   { field: 'firstName', headerName: 'Nom', width: 130 },
   { field: 'lastName', headerName: 'Prénom(s)', width: 130 },
   {
-    field: 'age',
+    field: 'sex',
     headerName: 'Sexe',
     width: 90,
   },
@@ -84,23 +86,65 @@ const columns = [
 
 const rows = [
   {
-    id: 1, lastName: 'Snow', firstName: 'Jon', age: 'M', maritalStatus: 'CELIBATAIRE', phone: '+22899744582', date: '2022-02-05', actions: 'r'
+    id: 1, lastName: 'Snow', firstName: 'Jon', sex: 'M', maritalStatus: 'CELIBATAIRE', phone: '+22899744582', date: '2022-02-05', actions: 'r'
   },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 'F', maritalStatus: 'VEUF(VE)', phone: '+22899744582', date: '2022-02-05', actions: 'r' },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 'M', maritalStatus: 'CELIBATAIRE', phone: '+22899744582', date: '2022-02-05', actions: 'r' },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 'F', maritalStatus: 'MARIE(E)', phone: '+22899744582', date: '2022-02-05', actions: 'r' },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: 'F', maritalStatus: 'CELIBATAIRE', phone: '+22899744582', date: '2022-02-05', actions: 'r' },
-  { id: 6, lastName: 'Melisandre', firstName: 'Winner', age: 'M', maritalStatus: 'MARIE(E)', phone: '+22899744582', date: '2022-02-05', actions: 'r' },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 'M', maritalStatus: 'CELIBATAIRE', phone: '+22899744582', date: '2022-02-05', actions: 'r' },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 'F', maritalStatus: 'VEUF(VE)', phone: '+22899744582', date: '2022-02-05', actions: 'r' },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 'F', maritalStatus: 'MARIE(E)', phone: '+22899744582', date: '2022-02-05', actions: 'r' },
+  { id: 2, lastName: 'Lannister', firstName: 'Cersei', sex: 'F', maritalStatus: 'VEUF(VE)', phone: '+22899744582', date: '2022-02-05', actions: 'r' },
+  { id: 3, lastName: 'Lannister', firstName: 'Jaime', sex: 'M', maritalStatus: 'CELIBATAIRE', phone: '+22899744582', date: '2022-02-05', actions: 'r' },
+  { id: 4, lastName: 'Stark', firstName: 'Arya', sex: 'F', maritalStatus: 'MARIE(E)', phone: '+22899744582', date: '2022-02-05', actions: 'r' },
+  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', sex: 'F', maritalStatus: 'CELIBATAIRE', phone: '+22899744582', date: '2022-02-05', actions: 'r' },
+  { id: 6, lastName: 'Melisandre', firstName: 'Winner', sex: 'M', maritalStatus: 'MARIE(E)', phone: '+22899744582', date: '2022-02-05', actions: 'r' },
+  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', sex: 'M', maritalStatus: 'CELIBATAIRE', phone: '+22899744582', date: '2022-02-05', actions: 'r' },
+  { id: 8, lastName: 'Frances', firstName: 'Rossini', sex: 'F', maritalStatus: 'VEUF(VE)', phone: '+22899744582', date: '2022-02-05', actions: 'r' },
+  { id: 9, lastName: 'Roxie', firstName: 'Harvey', sex: 'F', maritalStatus: 'MARIE(E)', phone: '+22899744582', date: '2022-02-05', actions: 'r' },
 ];
 
+/*
+const valuesArray = rows.map(row => {
+  const { firstName, lastName, phone } = row;
+  return [firstName, lastName, phone];
+});
+
+console.log(valuesArray);
+
+*/
+
+
+function PDF() {
+  const patientsList = new jsPDF()
+  const headerName = columns.map((item, index) => {
+    const isLastIteration = index === columns.length - 1;
+    const { headerName } = item
+
+    if (!isLastIteration) {
+      return [headerName]
+    }
+
+  });
+  const body = rows.map((item) => {
+    const { id, lastName, firstName, sex, maritalStatus, phone, date } = item
+
+    return [id, lastName, firstName, sex, maritalStatus, phone, date]
+  })
+  const downloadList = () => {
+    autoTable(patientsList, {
+      head: [headerName],
+      body: body,
+
+    })
+    patientsList.text('LISTE DES PATIENTS', 14, 12)
+    patientsList.text('', 14, 20)
+    patientsList.save('liste_des_patients.pdf')
+  }
+
+  return <div>
+    <button type='button' onClick={() => downloadList()} style={{ backgroundColor: '#e2e8f0' }}>Télécharger la liste en PDF</button>
+  </div>
+}
 function CustomToolbar() {
   return (
     <GridToolbarContainer>
       <GridToolbarExport />
-
+      <PDF />
     </GridToolbarContainer>
   );
 }

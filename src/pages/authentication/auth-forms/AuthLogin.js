@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 // material-ui
@@ -29,11 +29,14 @@ import AnimateButton from 'components/@extended/AnimateButton';
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import axios from '../../../../node_modules/axios/index';
-
+import { useNavigate } from '../../../../node_modules/react-router-dom/dist/index';
+import swal  from '../../../assets/sweet.alert';
+import { PATIENT_CONTEXT } from 'pages/context/PatientContext';
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = () => {
   const [checked, setChecked] = React.useState(false);
+  const { setMessage } = useContext(PATIENT_CONTEXT)
 
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => {
@@ -43,8 +46,20 @@ const AuthLogin = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-// winner1234@5
+
+  const navigate = useNavigate()
+
   const handleSignIn = (values) => {
+    const { email, password } = values;
+    if (email == 'delali@gmail.com' && password == 'winner@3002') {
+      {swal(`Soyez la bienvenue`, "", "success")}
+      navigate('/dashboard/default')
+    } else {
+      { setMessage('Email ou mot de passe invalide') }
+      return <div> {swal("Email ou mot de passe incorrect", "", "error")}</div>
+    }
+
+
     axios.post('http://localhost:3001/auth/login', values)
       .then((response) => console.log(response))
       .catch(function (error) {

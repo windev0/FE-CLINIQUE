@@ -13,14 +13,14 @@ const Ordonnance = {
     type: 'group',
     children: [
         {
-            id: 'lister',
+            id: 'ajouter2',
             title: 'Ajouter une Ordonnance',
             type: 'item',
             url: '/Ordonnance/ajouter',
             icon: icons.LoginOutlined,
         },
         {
-            id: 'ajouter',
+            id: 'lister',
             title: 'Liste des Ordonnances',
             type: 'item',
             url: '/Ordonnance/lister',

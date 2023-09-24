@@ -13,14 +13,14 @@ const Consultation = {
     type: 'group',
     children: [
         {
-            id: 'lister',
+            id: 'ajouter3',
             title: 'Ajouter une consultation',
             type: 'item',
             url: '/consultation/ajouter',
             icon: icons.LoginOutlined,
         },
         {
-            id: 'ajouter',
+            id: 'lister3',
             title: 'Liste des Consultations',
             type: 'item',
             url: '/consultation/lister',
