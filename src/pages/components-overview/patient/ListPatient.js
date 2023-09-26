@@ -84,7 +84,7 @@ const columns = [
 
 ];
 
-const rows = [
+export const rows = [
   {
     id: 1, lastName: 'Snow', firstName: 'Jon', sex: 'M', maritalStatus: 'CELIBATAIRE', phone: '+22899744582', date: '2022-02-05', actions: 'r'
   },

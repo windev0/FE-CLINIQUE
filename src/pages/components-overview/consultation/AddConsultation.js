@@ -1,8 +1,37 @@
-import React from 'react'
-
+import React, { useState } from 'react'
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import { rows } from '../patient/ListPatient';
+import AddForm from './AddForm';
 const AddConsultation = () => {
+
+    const patientsName = rows.map((item) => {
+        const { firstName, lastName, id } = item
+        return { label: `${firstName} ${lastName}`, id: id }
+    })
+
+    const [value, setValue] = useState(patientsName[0]);
+    const [inputValue, setInputValue] = useState('');
     return (
-        <div>AddConsultation</div>
+        <><Autocomplete style={{marginBottom : '3'}}
+            disablePortal
+            id="combo-box-demo"
+            options={patientsName}
+            sx={{ width: 300 }}
+            renderInput={(params) => <TextField {...params} label="Rechercher un patient" />}
+            value={value}
+            onChange={(event, newValue) => {
+                setValue(newValue);
+            }}
+            inputValue={inputValue}
+            onInputChange={(event, newInputValue) => {
+                setInputValue(newInputValue);
+            }}
+        />
+        <div style={{marginBottom : 10}}></div>
+            <AddForm patientId={value.id} />
+
+        </>
     )
 }
 

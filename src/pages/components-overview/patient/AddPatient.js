@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { strengthColor, strengthIndicator } from 'utils/password-strength';
+import React, { useState } from 'react';
 
-import { Link as RouterLink } from 'react-router-dom';
-import { DataGrid } from '@mui/x-data-grid';
+
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import {
@@ -16,43 +14,25 @@ import {
 } from '@mui/material';
 import { MenuItem } from '../../../../node_modules/@mui/material/index';
 import AnimateButton from 'components/@extended/AnimateButton';
-import { GridToolbarContainer } from '../../../../node_modules/@mui/x-data-grid/components/containers/GridToolbarContainer';
+export const USER_SEX = {
+  MALE: 'MASCULIN',
+  FEMALE: 'FEMININ'
+};
 
+export const MARITAL_STATUS = {
+  WINDOW: 'VEUF(VE)',
+  MARRIED: 'MARIE(E)',
+  SINGLE: 'CELIBATAIRE',
+  OTHER: 'AUTRE',
+}
 const AddPatient = () => {
 
   const [level, setLevel] = useState();
-  const [showPassword, setShowPassword] = useState(false);
-  const USER_SEX = {
-    MALE: 'MASCULIN',
-    FEMALE: 'FEMININ'
-  };
 
-  const MARITAL_STATUS = {
-    WINDOW: 'VEUF(VE)',
-    MARRIED: 'MARIE(E)',
-    SINGLE: 'CELIBATAIRE',
-    OTHER: 'AUTRE',
-  }
-
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const changePassword = (value) => {
-    const temp = strengthIndicator(value);
-    setLevel(strengthColor(temp));
-  };
 
   const handleType = (type) => {
     return type;
   }
-  useEffect(() => {
-    changePassword('');
-  }, []);
 
   const OhandleSubmit = (patient) => {
     axios.post('http://localhost:3001/patient', patient)
@@ -79,7 +59,7 @@ const AddPatient = () => {
   // }
 
   return (
-    <> 
+    <>
       <div>
 
         <Formik
