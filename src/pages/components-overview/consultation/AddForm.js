@@ -30,24 +30,28 @@ const AddForm = ({ patientId }) => {
                     <CardContent>
                         <Typography variant='h3'>Informations du patient</Typography>
                         <div style={{ display: 'flex' }}>
-                            <pre>Nom:  </pre>
-                            <pre> <b>{patient.lastName}</b></pre>
+                            <div style={{ display: 'flex' }}>
+                                <pre>Nom:</pre>
+                                <pre> <b>{patient.lastName}</b></pre>
+                            </div>
+                            <div style={{ display: 'flex', marginLeft: 35 }}>
+                                <pre>Prénom(s):</pre>
+                                <pre> <b>{patient.firstName}</b></pre>
+                            </div>
+                            <div style={{ display: 'flex',  marginLeft: 35  }}>
+                                <pre>Sex:</pre>
+                                <pre> <b>{patient.sex}</b></pre>
+                            </div>
                         </div>
                         <div style={{ display: 'flex' }}>
-                            <pre>Prénom(s):  </pre>
-                            <pre> <b>{patient.firstName}</b></pre>
-                        </div>
-                        <div style={{ display: 'flex' }}>
-                            <pre>Sex:  </pre>
-                            <pre> <b>{patient.sex}</b></pre>
-                        </div>
-                        <div style={{ display: 'flex' }}>
-                            <pre>Situation matrimoniale:  </pre>
-                            <pre> <b>{patient.maritalStatus}</b></pre>
-                        </div>
-                        <div style={{ display: 'flex' }}>
-                            <pre>Téléphone:  </pre>
-                            <pre> <b>{patient.phone}</b></pre>
+                            <div style={{ display: 'flex'  }}>
+                                <pre>Situation matrimoniale:</pre>
+                                <pre> <b>{patient.maritalStatus}</b></pre>
+                            </div>
+                            <div style={{ display: 'flex',  marginLeft: 35  }}>
+                                <pre>Téléphone:</pre>
+                                <pre> <b>{patient.phone}</b></pre>
+                            </div>
                         </div>
                     </CardContent>
                 </Card>
