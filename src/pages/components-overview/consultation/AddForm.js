@@ -19,12 +19,7 @@ import AnimateButton from 'components/@extended/AnimateButton';
 import { rows } from '../patient/ListPatient';
 
 const AddForm = ({ patientId }) => {
-    const patient = rows.map((item) => {
-        if (item.id === patientId) {
-            return item
-        }
-        return;
-    })
+    const patient = rows.find(patient => patient.id === patientId)
     const handleType = (type) => {
         return type;
     }
@@ -34,25 +29,25 @@ const AddForm = ({ patientId }) => {
                 <Card>
                     <CardContent>
                         <Typography variant='h3'>Informations du patient</Typography>
-                        <div style={{display: 'flex'}}>
+                        <div style={{ display: 'flex' }}>
                             <pre>Nom:  </pre>
-                           <pre> <b>{patient[0].lastName}</b></pre>
+                            <pre> <b>{patient.lastName}</b></pre>
                         </div>
-                        <div style={{display: 'flex'}}>
+                        <div style={{ display: 'flex' }}>
                             <pre>Prénom(s):  </pre>
-                           <pre> <b>{patient[0].firstName}</b></pre>
+                            <pre> <b>{patient.firstName}</b></pre>
                         </div>
-                        <div style={{display: 'flex'}}>
+                        <div style={{ display: 'flex' }}>
                             <pre>Sex:  </pre>
-                           <pre> <b>{patient[0].sex}</b></pre>
+                            <pre> <b>{patient.sex}</b></pre>
                         </div>
-                        <div style={{display: 'flex'}}>
+                        <div style={{ display: 'flex' }}>
                             <pre>Situation matrimoniale:  </pre>
-                           <pre> <b>{patient[0].maritalStatus}</b></pre>
+                            <pre> <b>{patient.maritalStatus}</b></pre>
                         </div>
-                        <div style={{display: 'flex'}}>
+                        <div style={{ display: 'flex' }}>
                             <pre>Téléphone:  </pre>
-                           <pre> <b>{patient[0].phone}</b></pre>
+                            <pre> <b>{patient.phone}</b></pre>
                         </div>
                     </CardContent>
                 </Card>
