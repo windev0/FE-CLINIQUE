@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { USER_SEX, MARITAL_STATUS } from '../patient/AddPatient';
 import * as Yup from 'yup';
@@ -13,16 +13,53 @@ import {
     Stack,
     Select
 } from '@mui/material';
-import { Card, CardMedia, MenuItem } from '../../../../node_modules/@mui/material/index';
+import { Card, MenuItem } from '../../../../node_modules/@mui/material/index';
 import CardContent from '@mui/material/CardContent';
 import AnimateButton from 'components/@extended/AnimateButton';
 import { rows } from '../patient/ListPatient';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
+
+
+export const REASONS = [
+    { label: 'EXAMENS DE ROUTINE', },
+    { label: 'PROBLEMES DE SANTE COURANTS', },
+    { label: 'PROBLEMES DE PEAU', },
+    { label: 'SANTE MENTALE', },
+    { label: 'AFFECTIONS CHRONIQUES', },
+    { label: 'BLESSURES', },
+    { label: 'CONSULTATIONS SPECIALISEES' },
+    { label: 'GROSSESSE' },
+    { label: 'SANTE DENTAIRE' },
+    { label: 'SOINS GERIATRIQUES' },
+]
+
+export const HISTORY_TYPE = {
+
+}
 const AddForm = ({ patientId }) => {
-    const patient = rows.find(patient => patient.id === patientId)
     const handleType = (type) => {
         return type;
     }
+
+    const [reason, setReason] = useState(REASONS[0]);
+    const [inputReason, setInputReason] = useState('');
+    const [historyType, setHistoryType] = useState(HISTORY_TYPE[0]);
+    const [inputHistoryType, setinputHistoryType] = useState('');
+
+    console.log('valeur', patientId)
+    if (patientId == null) {
+        return <div>
+            <Card>
+                <CardContent>
+                    <Typography variant='h6' style={{ textAlign: 'center' }}>Aucun patient trouvé</Typography>
+                </CardContent>
+            </Card>
+        </div>
+    }
+    const patient = rows.find(patient => patient.id === patientId)
+
     return (
         <>
             <div >
@@ -38,17 +75,17 @@ const AddForm = ({ patientId }) => {
                                 <pre>Prénom(s):</pre>
                                 <pre> <b>{patient.firstName}</b></pre>
                             </div>
-                            <div style={{ display: 'flex',  marginLeft: 35  }}>
+                            <div style={{ display: 'flex', marginLeft: 35 }}>
                                 <pre>Sex:</pre>
                                 <pre> <b>{patient.sex}</b></pre>
                             </div>
                         </div>
                         <div style={{ display: 'flex' }}>
-                            <div style={{ display: 'flex'  }}>
+                            <div style={{ display: 'flex' }}>
                                 <pre>Situation matrimoniale:</pre>
                                 <pre> <b>{patient.maritalStatus}</b></pre>
                             </div>
-                            <div style={{ display: 'flex',  marginLeft: 35  }}>
+                            <div style={{ display: 'flex', marginLeft: 35 }}>
                                 <pre>Téléphone:</pre>
                                 <pre> <b>{patient.phone}</b></pre>
                             </div>
@@ -56,36 +93,25 @@ const AddForm = ({ patientId }) => {
                     </CardContent>
                 </Card>
             </div>
+
+            <div style={{ marginBottom: 45 }}></div>
             <Formik
                 initialValues={{
-                    firstName: '',
-                    lastName: '',
-                    email: '',
-                    birthDate: '',
-                    birthPlace: '',
-                    sex: '',
-                    phone: '',
-                    emergencyContact: '',
-                    maritalStatus: '',
-                    address: '',
-                    nationality: '',
-                    identity: {},
-                    constant: {},
-                    job: ''
+                    reason: '',
+                    historyType: '',
+                    startingDate: '',
+                    closingDate: '',
+                    description: '',
+                    observation: '',
+
                 }}
                 validationSchema={Yup.object().shape({
-                    firstName: Yup.string().max(255).required('Le nom est obligatoire'),
-                    lastName: Yup.string().max(255).required('Le prénom est obligatoire'),
-                    birthPlace: Yup.string().max(255).required("Lieu de naissance est obligatoire"),
-                    email: Yup.string().email('Doit etre un email valide').max(255),
-                    nationality: Yup.string().max(255),
-                    job: Yup.string().max(255),
-                    address: Yup.string().max(255).required('L\'adresse est obligatoire'),
-                    sex: Yup.string().max(255).required('Le sexe est obligatoire'),
-                    emergencyContact: Yup.string().max(255).required('Ce champ est obligatoire'),
-                    emergencyContact: Yup.string().max(255).required('Le numéro de téléphone est obligatoire'),
-                    maritalStatus: Yup.string().max(255).required('Ce champ est obligatoire'),
-                    birthDate: Yup.date()
+                    reason: Yup.string().max(255).required('Ce champ est obligatoire'),
+                    historyType: Yup.string().max(255).required('Ce champ est obligatoire'),
+                    description: Yup.string().max(255).required('Ce champ est obligatoire'),
+                    observation: Yup.string().max(255).required('Ce champ est obligatoire'),
+                    startingDate: Yup.date().required('La date de début est obligatoire'),
+                    closingDate: Yup.date().required('La date de fin est obligatoire')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
@@ -104,65 +130,57 @@ const AddForm = ({ patientId }) => {
                         <Grid container spacing={3}>
                             <Grid item xs={12} md={4}>
                                 <Stack spacing={1}>
-                                    <InputLabel htmlFor="firstName-add">Nom*</InputLabel>
-                                    <OutlinedInput
-                                        id="firstName-login"
-                                        type="firstName"
-                                        value={values.firstName}
-                                        name="firstName"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        placeholder="AWOUNO"
-                                        fullWidth
-                                        error={Boolean(touched.firstName && errors.firstName)} />
-                                    {touched.firstName && errors.firstName && (
-                                        <FormHelperText error id="helper-text-firstName-add">
-                                            {errors.firstName}
-                                        </FormHelperText>
-                                    )}
+                                    <Autocomplete style={{ marginBottom: '3' }}
+                                        disablePortal
+                                        id="combo-box-demo"
+                                        options={REASONS}
+                                        sx={{ width: 300 }}
+                                        renderInput={(params) => <TextField {...params} label="Motif de la consultation" />}
+                                        value={reason ? reason : inputReason}
+                                        onChange={(event, newValue) => {
+                                            setReason(newValue);
+                                        }}
+                                        inputValue={inputReason}
+                                        onInputChange={(event, newInputValue) => {
+                                            setInputReason(newInputValue);
+                                        }}
+
+                                    />
+
+                                    {{ reason }== null || { inputReason } == null}
+                                    <FormHelperText error id="reason">
+                                        {errors.reason}
+                                    </FormHelperText>
+
                                 </Stack>
                             </Grid>
                             <Grid item xs={12} md={4}>
                                 <Stack spacing={1}>
-                                    <InputLabel htmlFor="lastName-add">Prénom(s)*</InputLabel>
-                                    <OutlinedInput
-                                        fullWidth
-                                        error={Boolean(touched.lastName && errors.lastName)}
-                                        id="lastName-add"
-                                        type="lastName"
-                                        value={values.lastName}
-                                        name="lastName"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        placeholder="Kosi Winner"
-                                        inputProps={{}} />
-                                    {touched.lastName && errors.lastName && (
-                                        <FormHelperText error id="helper-text-lastName-add">
-                                            {errors.lastName}
-                                        </FormHelperText>
-                                    )}
+                                    <Autocomplete style={{ marginBottom: '3' }}
+                                        disablePortal
+                                        id="combo-box-demo"
+                                        options={REASONS}
+                                        sx={{ width: 300 }}
+                                        renderInput={(params) => <TextField {...params} label="Antécédent - Type de maladie" />}
+                                        value={reason ? reason : inputReason}
+                                        onChange={(event, newValue) => {
+                                            setReason(newValue);
+                                        }}
+                                        inputValue={inputReason}
+                                        onInputChange={(event, newInputValue) => {
+                                            setInputReason(newInputValue);
+                                        }}
+
+                                    />
+
+                                    {{ reason }== null || { inputReason } == null}
+                                    <FormHelperText error id="reason">
+                                        {errors.reason}
+                                    </FormHelperText>
+
                                 </Stack>
                             </Grid>
-                            <Grid item xs={12} md={4}>
-                                <Stack spacing={1}>
-                                    <InputLabel htmlFor="lastName-add">Date de naissance*</InputLabel>
-                                    <OutlinedInput
-                                        fullWidth
-                                        error={Boolean(touched.birthDate && errors.birthDate)}
-                                        id="birthDate-add"
-                                        type="date"
-                                        value={values.lastName}
-                                        name="birthDate"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        inputProps={{}} />
-                                    {touched.birthDate && errors.birthDate && (
-                                        <FormHelperText error id="helper-text-birthDate-add">
-                                            {errors.birthDate}
-                                        </FormHelperText>
-                                    )}
-                                </Stack>
-                            </Grid>
+                           
                             <Grid spacing={3} item xs={12} md={3}>
                                 <Stack spacing={1}>
                                     <InputLabel htmlFor="address-add">Address</InputLabel>

@@ -28,8 +28,8 @@ const AddConsultation = () => {
                 setInputValue(newInputValue);
             }}
         />
-        <div style={{marginBottom : 10}}></div>
-            <AddForm patientId={value.id} />
+        <div style={{marginBottom : 15}}></div>
+            <AddForm patientId={value? value.id : null} />
 
         </>
     )
