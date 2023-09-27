@@ -10,7 +10,7 @@ const AddConsultation = () => {
         return { label: `${firstName} ${lastName}`, id: id }
     })
 
-    const [value, setValue] = useState(patientsName[0]);
+    const [value, setValue] = useState();
     const [inputValue, setInputValue] = useState('');
     return (
         <><Autocomplete style={{marginBottom : '3'}}

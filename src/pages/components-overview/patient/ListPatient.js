@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 import { GridToolbarContainer } from '../../../../node_modules/@mui/x-data-grid/components/containers/GridToolbarContainer';
 import { GridToolbarExport } from '../../../../node_modules/@mui/x-data-grid/components/toolbar/GridToolbarExport';
@@ -12,11 +12,11 @@ const handleEditClick = (id) => {
   // Ajoutez votre logique pour gérer l'édition d'une ligne avec l'ID donné.
   // Par exemple, vous pouvez ouvrir un dialogue d'édition.
   console.log(`Edit row with ID: ${id}`);
+  // appeler le component et lui passer le id
 };
 
 const handleDeleteClick = (id) => {
-  // Ajoutez votre logique pour gérer la suppression d'une ligne avec l'ID donné.
-  console.log(`Delete row with ID: ${id}`);
+  rows = rows.filter((item) => item.id != id)
 };
 
 
@@ -84,7 +84,7 @@ const columns = [
 
 ];
 
-export const rows = [
+export let rows = [
   {
     id: 1, lastName: 'Snow', firstName: 'Jon', sex: 'M', maritalStatus: 'CELIBATAIRE', phone: '+22899744582', date: '2022-02-05', actions: 'r'
   },
@@ -140,7 +140,7 @@ function PDF() {
     <button type='button' onClick={() => downloadList()} style={{ backgroundColor: '#e2e8f0' }}>Télécharger la liste en PDF</button>
   </div>
 }
-function CustomToolbar() {
+export function CustomToolbar() {
   return (
     <GridToolbarContainer>
       <GridToolbarExport />
@@ -149,6 +149,7 @@ function CustomToolbar() {
   );
 }
 const ListPatient = () => {
+
   return (
     <><div style={{ height: 500, width: '100%' }}>
       <DataGrid

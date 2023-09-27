@@ -35,13 +35,20 @@ export const REASONS = [
     { label: 'SOINS GERIATRIQUES' },
 ]
 
-export const HISTORY_TYPE = {
-
-}
+export const HISTORY_TYPE = [
+    { label: 'PATHOLOGIQUE' },
+    { label: 'CHIRURGICAL' },
+    { label: 'ALLERGIE MÉDICAMENTEUSE' },
+    { label: 'GYNÉCO-OBSTÉTRIQUE' },
+    { label: 'ANTECÉDENTS FAMILIAUX' },
+    { label: 'UROGÉNITAL' },
+    { label: 'PARA-CLINIQUE' },
+    { label: 'ACTIVITÉ SEXUELLE' },
+    { label: 'HYGIÉNO-DIÉTÉTIQUE' },
+    { label: 'AUTRE' },
+]
 const AddForm = ({ patientId }) => {
-    const handleType = (type) => {
-        return type;
-    }
+
 
     const [reason, setReason] = useState(REASONS[0]);
     const [inputReason, setInputReason] = useState('');
@@ -51,20 +58,19 @@ const AddForm = ({ patientId }) => {
     console.log('valeur', patientId)
     if (patientId == null) {
         return <div>
-            <Card>
+            <Card md={12}>
                 <CardContent>
-                    <Typography variant='h6' style={{ textAlign: 'center' }}>Aucun patient trouvé</Typography>
+                    <Typography variant='h3' style={{ textAlign: 'center' }}>Aucun patient sélectionné</Typography>
                 </CardContent>
             </Card>
         </div>
     }
     const patient = rows.find(patient => patient.id === patientId)
-
     return (
         <>
             <div >
-                <Card>
-                    <CardContent>
+                <Card md={12}>
+                    <CardContent md={12}>
                         <Typography variant='h3'>Informations du patient</Typography>
                         <div style={{ display: 'flex' }}>
                             <div style={{ display: 'flex' }}>
@@ -128,13 +134,13 @@ const AddForm = ({ patientId }) => {
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit} method='POST' action='submit'>
                         <Grid container spacing={3}>
-                            <Grid item xs={12} md={4}>
+                            <Grid item xs={12} md={6}>
                                 <Stack spacing={1}>
-                                    <Autocomplete style={{ marginBottom: '3' }}
+                                    <Autocomplete style={{ marginTop: 3 }}
                                         disablePortal
-                                        id="combo-box-demo"
+                                        id="reason"
                                         options={REASONS}
-                                        sx={{ width: 300 }}
+                                        sx={{ width: 400 }}
                                         renderInput={(params) => <TextField {...params} label="Motif de la consultation" />}
                                         value={reason ? reason : inputReason}
                                         onChange={(event, newValue) => {
@@ -147,178 +153,138 @@ const AddForm = ({ patientId }) => {
 
                                     />
 
-                                    {{ reason }== null || { inputReason } == null}
-                                    <FormHelperText error id="reason">
+                                    {{ reason } == null || { inputReason } == null}
+                                    {/* <FormHelperText error id="reason">
                                         {errors.reason}
-                                    </FormHelperText>
+                                    </FormHelperText> */}
 
                                 </Stack>
                             </Grid>
-                            <Grid item xs={12} md={4}>
+                            <Grid item xs={12} md={12}>
+                                <InputLabel htmlFor=""> <h2>ANTECEDENTS MEDICAUX</h2></InputLabel>
+
+
+                            </Grid>
+                            <Grid item xs={12} md={4} style={{ marginRight: 15 }}>
                                 <Stack spacing={1}>
-                                    <Autocomplete style={{ marginBottom: '3' }}
+                                    <Autocomplete style={{ marginTop: 15 }}
                                         disablePortal
-                                        id="combo-box-demo"
-                                        options={REASONS}
-                                        sx={{ width: 300 }}
-                                        renderInput={(params) => <TextField {...params} label="Antécédent - Type de maladie" />}
-                                        value={reason ? reason : inputReason}
+                                        id="history"
+                                        required={true}
+                                        options={HISTORY_TYPE}
+                                        sx={{ width: 320 }}
+                                        renderInput={(params) => <TextField {...params} label="Type de maladie" />}
+                                        value={historyType ? historyType : inputHistoryType}
                                         onChange={(event, newValue) => {
-                                            setReason(newValue);
+                                            setHistoryType(newValue);
                                         }}
-                                        inputValue={inputReason}
+                                        inputValue={inputHistoryType}
                                         onInputChange={(event, newInputValue) => {
-                                            setInputReason(newInputValue);
+                                            setinputHistoryType(newInputValue);
                                         }}
 
                                     />
 
-                                    {{ reason }== null || { inputReason } == null}
-                                    <FormHelperText error id="reason">
-                                        {errors.reason}
-                                    </FormHelperText>
+                                    {{ historyType } == null}
+                                    {/* <FormHelperText error id="history">
+                                        {errors.historyType}
+                                    </FormHelperText> */}
 
                                 </Stack>
                             </Grid>
-                           
-                            <Grid spacing={3} item xs={12} md={3}>
+
+
+
+
+                            <Grid item xs={12} md={3}>
                                 <Stack spacing={1}>
-                                    <InputLabel htmlFor="address-add">Address</InputLabel>
+                                    <InputLabel htmlFor="startingDate">Date de début du traitement</InputLabel>
                                     <OutlinedInput
                                         fullWidth
-                                        error={Boolean(touched.address && errors.address)}
-                                        id="address-add"
-                                        value={values.address}
-                                        name="address"
+                                        error={Boolean(touched.startingDate && errors.startingDate)}
+                                        id="starting-add"
+                                        type="date"
+                                        value={values.startingDate}
+                                        name="startingDate"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        placeholder="Kodjoviakopé"
                                         inputProps={{}} />
-                                    {touched.address && errors.address && (
-                                        <FormHelperText error id="helper-text-address-add">
-                                            {errors.address}
+                                    {touched.startingDate && errors.startingDate && (
+                                        <FormHelperText error id="helper-text-startingDate">
+                                            {errors.startingDate}
                                         </FormHelperText>
                                     )}
                                 </Stack>
                             </Grid>
                             <Grid item xs={12} md={3}>
                                 <Stack spacing={1}>
-                                    <InputLabel htmlFor="Type-add">Sexe*</InputLabel>
-                                    <Select fullWidth
-                                        labelId="sex"
-                                        id="sex-add"
-                                        // value=
-                                        label="sex"
-                                        name="sex"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        inputProps={{}}
-                                    >
-                                        <MenuItem value={handleType(USER_SEX.MALE)}>{USER_SEX.MALE}</MenuItem>
-                                        <MenuItem value={handleType(USER_SEX.FEMALE)}>{USER_SEX.FEMALE}</MenuItem>
-                                    </Select>
-
-                                    {touched.type && errors.type && (
-                                        <FormHelperText error id="helper-text-type-add">
-                                            {errors.type}
-                                        </FormHelperText>
-                                    )}
-                                </Stack>
-                            </Grid>
-                            <Grid item xs={12} md={3}>
-                                <Stack spacing={1}>
-                                    <InputLabel htmlFor="Type-add">Situation matrimoniale*</InputLabel>
-                                    <Select fullWidth
-                                        labelId="maritalStatus"
-                                        id="sex-add"
-                                        // value=
-                                        label="maritalStatus"
-                                        name="maritalStatus"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        inputProps={{}}
-                                    >
-                                        <MenuItem value={handleType(MARITAL_STATUS.MARRIED)}>{MARITAL_STATUS.MARRIED}</MenuItem>
-                                        <MenuItem value={handleType(MARITAL_STATUS.SINGLE)}>{MARITAL_STATUS.SINGLE}</MenuItem>
-                                        <MenuItem value={handleType(MARITAL_STATUS.WINDOW)}>{MARITAL_STATUS.WINDOW}</MenuItem>
-                                        <MenuItem value={handleType(MARITAL_STATUS.OTHER)}>{MARITAL_STATUS.OTHER}</MenuItem>
-                                    </Select>
-
-                                    {touched.maritalStatus && errors.maritalStatus && (
-                                        <FormHelperText error id="helper-text-type-add">
-                                            {errors.maritalStatus}
-                                        </FormHelperText>
-                                    )}
-                                </Stack>
-                            </Grid>
-                            <Grid item xs={12} md={3}>
-                                <Stack spacing={1}>
-                                    <InputLabel htmlFor="address-add">Contact de la personne à prévenir*</InputLabel>
+                                    <InputLabel htmlFor="closingDate">Date de fin du traitement</InputLabel>
                                     <OutlinedInput
                                         fullWidth
-                                        error={Boolean(touched.address && errors.address)}
-                                        id="address-add"
-                                        // value={}
-                                        name="emergencyContact"
+                                        error={Boolean(touched.closingDate && errors.closingDate)}
+                                        id="closingDate-add"
+                                        type="date"
+                                        value={values.closingDate}
+                                        name="closingDate"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        placeholder="+22899782841"
                                         inputProps={{}} />
-                                    {touched.address && errors.address && (
-                                        <FormHelperText error id="helper-text-address-add">
-                                            {errors.address}
+                                    {touched.closingDate && errors.closingDate && (
+                                        <FormHelperText error id="helper-text-closingDate">
+                                            {errors.closingDate}
                                         </FormHelperText>
                                     )}
                                 </Stack>
                             </Grid>
                             <Grid item xs={4}>
                                 <Stack spacing={1}>
-                                    <InputLabel htmlFor="nationality-add">Nationalité</InputLabel>
+                                    <InputLabel htmlFor="description-add">Description sur la maladie</InputLabel>
                                     <OutlinedInput
                                         fullWidth
-                                        error={Boolean(touched.job && errors.job)}
-                                        id="nationality-add"
+                                        width={400}
+                                        error={Boolean(touched.description && errors.description)}
+                                        id="description-add"
                                         type="string"
-                                        name="nationality"
+                                        name="description"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        placeholder="Togolaise"
+                                        placeholder="Très contagieux"
                                         inputProps={{}} />
-                                    {touched.nationality && errors.nationality && (
-                                        <FormHelperText error id="helper-text-job-add">
-                                            {errors.nationality}
+                                    {touched.description && errors.description && (
+                                        <FormHelperText error id="helper-text-description">
+                                            {errors.description}
                                         </FormHelperText>
                                     )}
                                 </Stack>
                             </Grid>
                             <Grid item xs={4}>
                                 <Stack spacing={1}>
-                                    <InputLabel htmlFor="job-add">Profession</InputLabel>
+                                    <InputLabel htmlFor="Observation">Observation du médecin</InputLabel>
                                     <OutlinedInput
                                         fullWidth
-                                        error={Boolean(touched.job && errors.job)}
-                                        id="job-add"
-                                        value=''
+                                        error={Boolean(touched.observation && errors.observation)}
+                                        id="observation-add"
                                         type="string"
-                                        name="job"
+                                        name="observation"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        placeholder="Enseignant"
+                                        placeholder="Bien soignée"
                                         inputProps={{}} />
-                                    {touched.job && errors.job && (
-                                        <FormHelperText error id="helper-text-job-add">
-                                            {errors.job}
+                                    {touched.observation && errors.observation && (
+                                        <FormHelperText error id="helper-text-observation">
+                                            {errors.observation}
                                         </FormHelperText>
                                     )}
                                 </Stack>
                             </Grid>
+
                             <Grid item xs={12} md={4}>
                                 <Stack spacing={1}>
-                                    <InputLabel htmlFor="phone-add">Téléphone*</InputLabel>
+                                    <InputLabel htmlFor="phone-add">Téléphone du médecin soignant*</InputLabel>
                                     <OutlinedInput
                                         fullWidth
                                         error={Boolean(touched.phone && errors.phone)}
-                                        id="phone-add"
+                                        id="phone"
                                         name="phone"
                                         value=''
                                         onBlur={handleBlur}
@@ -332,111 +298,6 @@ const AddForm = ({ patientId }) => {
                                     )}
                                 </Stack>
                             </Grid>
-                            <Grid item xs={2}>
-                                <Stack spacing={1}>
-                                    <InputLabel htmlFor="constants-add">Poids*</InputLabel>
-                                    <OutlinedInput
-                                        fullWidth
-                                        error={Boolean(touched.job && errors.job)}
-                                        id="weight-add"
-                                        type="number"
-                                        name="weight"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        placeholder="15"
-                                        inputProps={{}} />
-                                    {touched.nationality && errors.nationality && (
-                                        <FormHelperText error id="helper-text-job-add">
-                                            {errors.nationality}
-                                        </FormHelperText>
-                                    )}
-                                </Stack>
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Stack spacing={1}>
-                                    <InputLabel htmlFor="constants-add">Taille*</InputLabel>
-                                    <OutlinedInput
-                                        fullWidth
-                                        error={Boolean(touched.job && errors.job)}
-                                        id="weight-add"
-                                        type="number"
-                                        name="height"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        placeholder="1.54"
-                                        inputProps={{}} />
-                                    {touched.nationality && errors.nationality && (
-                                        <FormHelperText error id="helper-text-job-add">
-                                            {errors.nationality}
-                                        </FormHelperText>
-                                    )}
-                                </Stack>
-                            </Grid>
-                            <Grid spacing={2} item xs={2}>
-                                <Stack spacing={1}>
-                                    <InputLabel htmlFor="constants-add">Température*</InputLabel>
-                                    <OutlinedInput
-                                        fullWidth
-                                        error={Boolean(touched.job && errors.job)}
-                                        id="weight-add"
-                                        type="number"
-                                        name="temperature"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        placeholder="1.54"
-                                        inputProps={{}} />
-                                    {touched.nationality && errors.nationality && (
-                                        <FormHelperText error id="helper-text-job-add">
-                                            {errors.nationality}
-                                        </FormHelperText>
-                                    )}
-                                </Stack>
-                            </Grid>
-                            <Grid item xs={3}>
-                                <Stack spacing={1}>
-                                    <InputLabel htmlFor="constants-add">Pression artérielle</InputLabel>
-                                    <OutlinedInput
-                                        fullWidth
-                                        error={Boolean(touched.job && errors.job)}
-                                        id="weight-add"
-                                        type="number"
-                                        name="temperature"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        placeholder="1.54"
-                                        inputProps={{}} />
-                                    {touched.nationality && errors.nationality && (
-                                        <FormHelperText error id="helper-text-job-add">
-                                            {errors.nationality}
-                                        </FormHelperText>
-                                    )}
-                                </Stack>
-                            </Grid>
-                            <Grid item xs={3}>
-                                <Stack spacing={1}>
-                                    <InputLabel htmlFor="constants-add">Fr&quence cardiaque</InputLabel>
-                                    <OutlinedInput
-                                        fullWidth
-                                        error={Boolean(touched.job && errors.job)}
-                                        id="weight-add"
-                                        type="number"
-                                        name="heartRate"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        placeholder="1.54"
-                                        inputProps={{}} />
-                                    {touched.nationality && errors.nationality && (
-                                        <FormHelperText error id="helper-text-job-add">
-                                            {errors.nationality}
-                                        </FormHelperText>
-                                    )}
-                                </Stack>
-                            </Grid>
-                            {errors.submit && (
-                                <Grid item xs={4}>
-                                    <FormHelperText error>{errors.submit}</FormHelperText>
-                                </Grid>
-                            )}
                             <Grid container item xs={2}>
                                 <AnimateButton>
                                     <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" onClick={() => OhandleSubmit(values)} variant="contained" color="primary">
@@ -444,9 +305,7 @@ const AddForm = ({ patientId }) => {
                                     </Button>
                                 </AnimateButton>
                             </Grid>
-
                         </Grid>
-
                     </form>
                 )}
             </Formik>
