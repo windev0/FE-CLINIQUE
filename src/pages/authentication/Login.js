@@ -16,7 +16,7 @@ const Login = () => (
         <Stack direction="row" justifyContent="space-between" alignItems="baseline" sx={{ mb: { xs: -0.5, sm: 0.5 } }}>
           <Typography variant="h3">Se connecter</Typography>
           <Typography component={Link} to="/register" variant="body1" sx={{ textDecoration: 'none' }} color="primary">
-            Pas encore de compte?
+            Pas encore de compte ?
           </Typography>
         </Stack>
       </Grid>
