@@ -3,6 +3,9 @@ import { lazy } from 'react';
 // project import
 import Loadable from 'components/Loadable';
 import MainLayout from 'layout/MainLayout';
+import { Navigate } from 'react-router-dom';
+import AddPrescription from '../pages/components-overview/prescription/AddPrescription';
+import ListPrescription from '../pages/components-overview/prescription/ListPrescription';
 
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
@@ -25,8 +28,8 @@ const AddConsultation = Loadable(lazy(() => import('pages/components-overview/co
 const ListConsultation = Loadable(lazy(() => import('pages/components-overview/consultation/ListConsultation')));
 
 
-const AddOrdonnance = Loadable(lazy(() => import('pages/components-overview/ordonnance/AddOrdonance')));
-const ListOrdonnance = Loadable(lazy(() => import('pages/components-overview/ordonnance/ListOrdonnance')));
+// const AddOrdonnance = Loadable(lazy(() => import('pages/components-overview/ordonnance/AddOrdonance')));
+// const ListOrdonnance = Loadable(lazy(() => import('pages/components-overview/ordonnance/ListOrdonnance')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -34,6 +37,7 @@ const MainRoutes = {
   path: '/',
   element: <MainLayout />,
   children: [
+    // { element: <Navigate to="/clinique" />, index: true },
     {
       path: '/',
       element: <DashboardDefault /> 
@@ -98,11 +102,11 @@ const MainRoutes = {
       children: [
         {
           path: 'ajouter',
-          element: <AddOrdonnance />
+          element: <AddPrescription />
         },
         {
           path: 'lister',
-          element: <ListOrdonnance />
+          element: <ListPrescription />
         }
       ]
     }

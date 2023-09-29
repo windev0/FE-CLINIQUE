@@ -7,7 +7,7 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { HISTORY_TYPE, REASONS } from "./AddForm";
+import { MEDICATION_NAME, PRESCRIPTION_TYPE } from "./AddPrescriptionForm";
 import { ConsultationService } from "../../../provider/consultation.provider";
 import { TableContext } from "../../context/PatientContext";
 import { fDate, fDateSpaceTime } from "../../../utils/formatTime";
@@ -91,98 +91,98 @@ const columns = [
   },
 ];
 
-export const rows = [
-  {
-    id: 1,
-    patient: "Snow Jon",
-    reason: REASONS[0].label,
-    type: HISTORY_TYPE[0].label,
-    startingDate: "2022-12-05",
-    closingDate: "2022-12-05",
-    phone: "+2258710078",
-    actions: "r",
-  },
-  {
-    id: 2,
-    patient: "Lannister Cersei",
-    reason: REASONS[1].label,
-    type: HISTORY_TYPE[0].label,
-    startingDate: "2022-12-05",
-    closingDate: "2022-12-05",
-    phone: "+2258710078",
-    actions: "r",
-  },
-  {
-    id: 3,
-    patient: "Lannister Jaime",
-    reason: REASONS[0].label,
-    type: HISTORY_TYPE[2].label,
-    startingDate: "2022-12-05",
-    closingDate: "2022-12-05",
-    phone: "+2258710078",
-    actions: "r",
-  },
-  {
-    id: 4,
-    patient: "Stark Arya",
-    reason: REASONS[0].label,
-    type: HISTORY_TYPE[0].label,
-    startingDate: "2022-12-05",
-    closingDate: "2022-12-05",
-    phone: "+2258710078",
-    actions: "r",
-  },
-  {
-    id: 5,
-    patient: "Targaryen Daenerys",
-    reason: REASONS[1].label,
-    type: HISTORY_TYPE[3].label,
-    startingDate: "2022-12-05",
-    closingDate: "2022-12-05",
-    phone: "+2258710078",
-    actions: "r",
-  },
-  {
-    id: 6,
-    patient: "Melisandre Winner",
-    reason: REASONS[2].label,
-    type: HISTORY_TYPE[0].label,
-    startingDate: "2022-12-05",
-    closingDate: "2022-12-05",
-    phone: "+2258710078",
-    actions: "r",
-  },
-  {
-    id: 7,
-    patient: "Clifford Ferrara",
-    reason: REASONS[3].label,
-    type: HISTORY_TYPE[1].label,
-    startingDate: "2022-12-05",
-    closingDate: "2022-12-05",
-    phone: "+2258710078",
-    actions: "r",
-  },
-  {
-    id: 8,
-    patient: "Frances Rossini",
-    reason: REASONS[2].label,
-    type: HISTORY_TYPE[0].label,
-    startingDate: "2022-12-05",
-    closingDate: "2022-12-05",
-    phone: "+2258710078",
-    actions: "r",
-  },
-  {
-    id: 9,
-    patient: "Roxie Harvey",
-    reason: REASONS[4].label,
-    type: HISTORY_TYPE[5].label,
-    startingDate: "2022-12-05",
-    closingDate: "2022-12-05",
-    phone: "+2258710078",
-    actions: "r",
-  },
-];
+// export const rows = [
+//   {
+//     id: 1,
+//     patient: "Snow Jon",
+//     reason: PRESCRIPTION_TYPE[0].label,
+//     type: MEDICATION_NAME[0].label,
+//     startingDate: "2022-12-05",
+//     closingDate: "2022-12-05",
+//     phone: "+2258710078",
+//     actions: "r",
+//   },
+//   {
+//     id: 2,
+//     patient: "Lannister Cersei",
+//     reason: PRESCRIPTION_TYPE[1].label,
+//     type: MEDICATION_NAME[0].label,
+//     startingDate: "2022-12-05",
+//     closingDate: "2022-12-05",
+//     phone: "+2258710078",
+//     actions: "r",
+//   },
+//   {
+//     id: 3,
+//     patient: "Lannister Jaime",
+//     reason: PRESCRIPTION_TYPE[0].label,
+//     type: MEDICATION_NAME[2].label,
+//     startingDate: "2022-12-05",
+//     closingDate: "2022-12-05",
+//     phone: "+2258710078",
+//     actions: "r",
+//   },
+//   {
+//     id: 4,
+//     patient: "Stark Arya",
+//     reason: PRESCRIPTION_TYPE[0].label,
+//     type: MEDICATION_NAME[0].label,
+//     startingDate: "2022-12-05",
+//     closingDate: "2022-12-05",
+//     phone: "+2258710078",
+//     actions: "r",
+//   },
+//   {
+//     id: 5,
+//     patient: "Targaryen Daenerys",
+//     reason: PRESCRIPTION_TYPE[1].label,
+//     type: MEDICATION_NAME[3].label,
+//     startingDate: "2022-12-05",
+//     closingDate: "2022-12-05",
+//     phone: "+2258710078",
+//     actions: "r",
+//   },
+//   {
+//     id: 6,
+//     patient: "Melisandre Winner",
+//     reason: PRESCRIPTION_TYPE[2].label,
+//     type: MEDICATION_NAME[0].label,
+//     startingDate: "2022-12-05",
+//     closingDate: "2022-12-05",
+//     phone: "+2258710078",
+//     actions: "r",
+//   },
+//   {
+//     id: 7,
+//     patient: "Clifford Ferrara",
+//     reason: PRESCRIPTION_TYPE[3].label,
+//     type: MEDICATION_NAME[1].label,
+//     startingDate: "2022-12-05",
+//     closingDate: "2022-12-05",
+//     phone: "+2258710078",
+//     actions: "r",
+//   },
+//   {
+//     id: 8,
+//     patient: "Frances Rossini",
+//     reason: PRESCRIPTION_TYPE[2].label,
+//     type: MEDICATION_NAME[0].label,
+//     startingDate: "2022-12-05",
+//     closingDate: "2022-12-05",
+//     phone: "+2258710078",
+//     actions: "r",
+//   },
+//   {
+//     id: 9,
+//     patient: "Roxie Harvey",
+//     reason: PRESCRIPTION_TYPE[4].label,
+//     type: MEDICATION_NAME[5].label,
+//     startingDate: "2022-12-05",
+//     closingDate: "2022-12-05",
+//     phone: "+2258710078",
+//     actions: "r",
+//   },
+// ];
 
 function PDF() {
   const { rows } = useContext(TableContext);
@@ -239,7 +239,7 @@ export function CustomToolbar() {
     </GridToolbarContainer>
   );
 }
-const ListConsultation = () => {
+const ListPrescription = () => {
   const [consultations, setConsultations] = useState([]);
 
   useEffect(() => {
@@ -291,4 +291,4 @@ const ListConsultation = () => {
   );
 };
 
-export default ListConsultation;
+export default ListPrescription;

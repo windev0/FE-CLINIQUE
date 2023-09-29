@@ -1,5 +1,7 @@
 import { createContext, useEffect, useState } from "react";
-import axios from "../../../node_modules/axios/index";
+import axios from "axios";
+
+export const TableContext = createContext();
 
 export const PATIENT_CONTEXT = createContext();
 

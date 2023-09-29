@@ -13,73 +13,71 @@ import {
   Autocomplete,
   TextField,
   CardContent,
-  Card
+  Card,
 } from "@mui/material";
 import AnimateButton from "components/@extended/AnimateButton";
-// import { rows } from "../patient/ListConsultation";
 
-import { ConsultationService } from "../../../provider/consultation.provider";
-import swal from "../../../assets/sweet.alert";
 import { TableContext } from "../../context/PatientContext";
+import swal from "../../../assets/sweet.alert";
+import { PrescriptionService } from "../../../provider/prescription.provider";
 
-export const REASONS = [
-  { label: "EXAMENS DE ROUTINE" },
-  { label: "PROBLEMES DE SANTE COURANTS" },
-  { label: "PROBLEMES DE PEAU" },
-  { label: "SANTE MENTALE" },
-  { label: "AFFECTIONS CHRONIQUES" },
-  { label: "BLESSURES" },
-  { label: "CONSULTATIONS SPECIALISEES" },
-  { label: "GROSSESSE" },
-  { label: "SANTE DENTAIRE" },
-  { label: "SOINS GERIATRIQUES" },
+export const PRESCRIPTION_TYPE = [
+  {label: 'A ACHETER'},
+  {label: 'A INJECTER'},
 ];
 
-export const HISTORY_TYPE = [
-  { label: "PATHOLOGIQUE" },
-  { label: "CHIRURGICAL" },
-  { label: "ALLERGIE MÉDICAMENTEUSE" },
-  { label: "GYNÉCO-OBSTÉTRIQUE" },
-  { label: "ANTECÉDENTS FAMILIAUX" },
-  { label: "UROGÉNITAL" },
-  { label: "PARA-CLINIQUE" },
-  { label: "ACTIVITÉ SEXUELLE" },
-  { label: "HYGIÉNO-DIÉTÉTIQUE" },
+export const MEDICATION_NAME = [
+
+  { label: "ASPIRINE" },
+  { label: "IBUPROFÈNE" },
+  { label: "PARACÉTAMOL" },
+  { label: "AMOXICILLINE" },
+  { label: "LIPITOR" },
+  { label: "VITAMINE C" },
+  { label: "ATÉNOLOL" },
+  { label: "LANSOPRAZOLE" },
+  { label: "ALBUTÉROL" },
+  { label: "INSULINE" },
   { label: "AUTRE" },
 ];
-const AddForm = ({ patientId }) => {
-  const navigate = useNavigate()
+const AddForm = ({ patientId: consultationId }) => {
+  const navigate = useNavigate();
 
-  const [reason, setReason] = useState(REASONS[0]);
+  const [type, setType] = useState(PRESCRIPTION_TYPE[0]);
   const [inputReason, setInputReason] = useState("");
-  const [historyType, setHistoryType] = useState(HISTORY_TYPE[0]);
+  const [medicationName, setHistoryType] = useState(MEDICATION_NAME[0]);
   const [inputHistoryType, setinputHistoryType] = useState("");
-  const { patients } = useContext(TableContext);
+  const { consultations } = useContext(TableContext);
 
   const OhandleSubmit = (data) => {
-    const history = {
-      startingDate: data.startingDate,
-      closingDate: data.closingDate,
-      description: data.description,
-      observation: data.observation,
-      type: historyType.label,
+    const medication = {
+      dosage: data.dosage,
+      name: medicationName.label,
     };
 
-    ConsultationService.createConsultation({ ...data, patientId, history })
+    PrescriptionService.createPrescription({
+      ...data,
+      consultationId,
+      medication,
+    })
       .then((resp) => {
-        console.log("Consultation ===", resp);
+        console.log("Ordonnance ===", resp);
         if (resp) {
-          {swal(`Consultation ajouté`, "", "success");}
+          {
+            swal(`Ordonnance ajouté`, "", "success");
+          }
           navigate("/consultation/lister");
         }
       })
       .catch((error) => {
-        console.log('ERROR::===', error)
-        {swal(`Une erreur s'est produite. Veuillez réessayer!`, "", "error");}
+        console.log("ERROR::===", error);
+        {
+          swal(`Une erreur s'est produite. Veuillez réessayer!`, "", "error");
+        }
       });
   };
 
-  if (patientId == null) {
+  if (consultationId == null) {
     return (
       <div>
         {/* <Card md={12}>
@@ -92,7 +90,8 @@ const AddForm = ({ patientId }) => {
       </div>
     );
   }
-  const patient = patients?.find((patient) => patient.id === patientId);
+  const consult = consultations?.find((patient) => patient.id === consultationId);
+  const patient = consultations?.find((patient) => patient.id === consultationId)?.patient;
   return (
     <>
       <div>
@@ -145,26 +144,17 @@ const AddForm = ({ patientId }) => {
       <div style={{ marginBottom: 45 }}></div>
       <Formik
         initialValues={{
-          phone: "+22890202031",
-          reason: "CONSULTATIONS SPECIALISEES",
-          startingDate: new Date(2023, 8, 30),
-          closingDate: new Date(2023, 9, 15),
-          description: "Une description de routine",
+          type: "A ACHETER",
+          dosage: "Selon le notice",
           observation: "Une simple observation",
-          type: "RADIOGRAPHIE",
+          name: "ASPIRINE",
         }}
         validationSchema={Yup.object().shape({
-          reason: Yup.string().max(255).required("Ce champ est obligatoire"),
+          name: Yup.string().max(255).required("Ce champ est obligatoire"),
           type: Yup.string().max(255).required("Ce champ est obligatoire"),
-          description: Yup.string()
-            .max(255)
-            .required("Ce champ est obligatoire"),
           observation: Yup.string()
             .max(255)
             .required("Ce champ est obligatoire"),
-          startingDate: Yup.date().required("La date de début est obligatoire"),
-          closingDate: Yup.date().required("La date de fin est obligatoire"),
-          phone: Yup.string().max(20).required("Ce champ est obligatoire"),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
@@ -199,15 +189,16 @@ const AddForm = ({ patientId }) => {
                   <Autocomplete
                     style={{ marginTop: 3 }}
                     disablePortal
-                    id="reason"
-                    options={REASONS}
+                    id="type"
+                    name="type"
+                    options={PRESCRIPTION_TYPE}
                     // sx={{ width: 400 }}
                     renderInput={(params) => (
-                      <TextField {...params} label="Motif de la consultation" />
+                      <TextField {...params} label="Type d'ordonnance" />
                     )}
-                    value={reason ? reason : inputReason}
+                    value={type ? type : inputReason}
                     onChange={(event, newValue) => {
-                      setReason(newValue);
+                      setType(newValue);
                     }}
                     inputValue={inputReason}
                     onInputChange={(event, newInputValue) => {
@@ -215,16 +206,13 @@ const AddForm = ({ patientId }) => {
                     }}
                   />
 
-                  {{ reason } == null || { inputReason } == null}
-                  {/* <FormHelperText error id="reason">
-                                        {errors.reason}
-                                    </FormHelperText> */}
+                  {{ reason: type } == null || { inputReason } == null}
                 </Stack>
               </Grid>
               <Grid item xs={12} md={12}>
                 <InputLabel htmlFor="">
                   {" "}
-                  <h2>ANTECEDENTS MEDICAUX</h2>
+                  <h2>MÉDICAMENT</h2>
                 </InputLabel>
               </Grid>
               <Grid item xs={12} md={4}>
@@ -232,15 +220,14 @@ const AddForm = ({ patientId }) => {
                   <Autocomplete
                     style={{ marginTop: 15 }}
                     disablePortal
-                    id="history"
+                    id="medication_name"
                     required={true}
-                    options={HISTORY_TYPE}
-                    name="type"
-                    // sx={{ width: 320 }}
+                    options={MEDICATION_NAME}
+                    name="name"
                     renderInput={(params) => (
-                      <TextField {...params} label="Type de maladie" />
+                      <TextField {...params} label="Nom du médicament" />
                     )}
-                    value={historyType ? historyType : inputHistoryType}
+                    value={medicationName ? medicationName : inputHistoryType}
                     onChange={(event, newValue) => {
                       setHistoryType(newValue);
                     }}
@@ -250,85 +237,11 @@ const AddForm = ({ patientId }) => {
                     }}
                   />
 
-                  {{ historyType } == null}
-                  {/* <FormHelperText error id="history">
-                                        {errors.historyType}
-                                    </FormHelperText> */}
+                  {medicationName == null}
                 </Stack>
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <Stack spacing={1}>
-                  <InputLabel htmlFor="startingDate">
-                    Date de début du traitement
-                  </InputLabel>
-                  <OutlinedInput
-                    fullWidth
-                    error={Boolean(touched.startingDate && errors.startingDate)}
-                    id="starting-add"
-                    type="date"
-                    value={values.startingDate}
-                    name="startingDate"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    inputProps={{}}
-                  />
-                  {touched.startingDate && errors.startingDate && (
-                    <FormHelperText error id="helper-text-startingDate">
-                      {errors.startingDate}
-                    </FormHelperText>
-                  )}
-                </Stack>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Stack spacing={1}>
-                  <InputLabel htmlFor="closingDate">
-                    Date de fin du traitement
-                  </InputLabel>
-                  <OutlinedInput
-                    fullWidth
-                    error={Boolean(touched.closingDate && errors.closingDate)}
-                    id="closingDate-add"
-                    type="date"
-                    value={values.closingDate}
-                    name="closingDate"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    inputProps={{}}
-                  />
-                  {touched.closingDate && errors.closingDate && (
-                    <FormHelperText error id="helper-text-closingDate">
-                      {errors.closingDate}
-                    </FormHelperText>
-                  )}
-                </Stack>
-              </Grid>
-              <Grid item xs={4}>
-                <Stack spacing={1}>
-                  <InputLabel htmlFor="description-add">
-                    Description sur la maladie
-                  </InputLabel>
-                  <OutlinedInput
-                    fullWidth
-                    width={400}
-                    error={Boolean(touched.description && errors.description)}
-                    id="description-add"
-                    type="string"
-                    name="description"
-                    value={values.description}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    placeholder="Très contagieux"
-                    inputProps={{}}
-                  />
-                  {touched.description && errors.description && (
-                    <FormHelperText error id="helper-text-description">
-                      {errors.description}
-                    </FormHelperText>
-                  )}
-                </Stack>
-              </Grid>
-              <Grid item xs={4}>
                 <Stack spacing={1}>
                   <InputLabel htmlFor="Observation">
                     Observation du médecin
@@ -355,28 +268,28 @@ const AddForm = ({ patientId }) => {
 
               <Grid item xs={12} md={4}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="phone-add">
-                    Téléphone du médecin soignant*
+                  <InputLabel htmlFor="dosage-add">
+                    Dosage*
                   </InputLabel>
                   <OutlinedInput
                     fullWidth
-                    error={Boolean(touched.phone && errors.phone)}
-                    id="phone"
-                    name="phone"
-                    value={values.phone}
+                    error={Boolean(touched.dosage && errors.dosage)}
+                    id="dosage"
+                    name="dosage"
+                    value={values.dosage}
                     onBlur={handleBlur}
                     onChange={handleChange}
                     placeholder="+22899782841"
                     inputProps={{}}
                   />
-                  {touched.phone && errors.phone && (
-                    <FormHelperText error id="helper-text-phone-add">
-                      {errors.phone}
+                  {touched.dosage && errors.dosage && (
+                    <FormHelperText error id="helper-text-dosage-add">
+                      {errors.dosage}
                     </FormHelperText>
                   )}
                 </Stack>
               </Grid>
-              <Grid container item xs={2}>
+              <Grid container item xs={4}>
                 <AnimateButton>
                   <Button
                     disableElevation

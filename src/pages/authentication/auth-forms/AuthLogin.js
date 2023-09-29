@@ -1,15 +1,13 @@
-import React, { useContext } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import {
   Button,
   Checkbox,
-  Divider,
   FormControlLabel,
   FormHelperText,
   Grid,
-  Link,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -23,22 +21,19 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 
 // project import
-import FirebaseSocial from './FirebaseSocial';
 import AnimateButton from 'components/@extended/AnimateButton';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-import axios from '../../../../node_modules/axios/index';
-import { useNavigate } from '../../../../node_modules/react-router-dom/dist/index';
 import swal  from '../../../assets/sweet.alert';
 import { PATIENT_CONTEXT } from 'pages/context/PatientContext';
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = () => {
-  const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = useState(false);
   const { setMessage } = useContext(PATIENT_CONTEXT)
 
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -51,6 +46,16 @@ const AuthLogin = () => {
 
   const handleSignIn = (values) => {
     const { email, password } = values;
+    console.log('VALUES ======= ', checked, values);
+    // AuthService.signin({...values, remember: checked}).then((user) => {
+    //   if (user) {
+    //     {swal(`Soyez la bienvenue`, "", "success")}
+    //   navigate('/dashboard/default')
+    //   }
+    // }).catch(() => {
+    //   { setMessage('Email ou mot de passe invalide') }
+    //   return <div> {swal("Email ou mot de passe incorrect", "", "error")}</div>
+    // })
     if (email == 'delali@gmail.com' && password == 'winner@3002') {
       {swal(`Soyez la bienvenue`, "", "success")}
       navigate('/dashboard/default')
@@ -60,20 +65,20 @@ const AuthLogin = () => {
     }
 
 
-    axios.post('http://localhost:3001/auth/login', values)
-      .then((response) => console.log(response))
-      .catch(function (error) {
-        console.log(error);
-      });
+    // axios.post('http://localhost:3001/auth/login', values)
+    //   .then((response) => console.log(response))
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
 
-    console.log(values)
+    // console.log(values)
   }
   return (
     <>
       <Formik
         initialValues={{
-          email: 'info@codedthemes.com',
-          password: '123456',
+          email: 'delali@gmail.com',
+          password: 'winner@3002',
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -164,9 +169,9 @@ const AuthLogin = () => {
                     }
                     label={<Typography variant="h6">Se souvenir de moi</Typography>}
                   />
-                  <Link variant="h6" component={RouterLink} to="" color="text.primary">
-                    Mot de passe oublié?
-                  </Link>
+                  {/* <Link variant="h6" component={RouterLink} to="" color="text.primary">
+                    Mot de passe oublié ?
+                  </Link> */}
                 </Stack>
               </Grid>
               {errors.submit && (

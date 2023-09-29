@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const AddOrdonance = () => {
-  return (
-    <div>AddOrdonance</div>
-  )
-}
+  return <div>AddOrdonance</div>;
+};
 
-export default AddOrdonance
+export default AddOrdonance;
