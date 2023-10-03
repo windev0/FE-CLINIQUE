@@ -22,12 +22,11 @@ import swal from "../../../assets/sweet.alert";
 import { PrescriptionService } from "../../../provider/prescription.provider";
 
 export const PRESCRIPTION_TYPE = [
-  {label: 'A ACHETER'},
-  {label: 'A INJECTER'},
+  { label: "A ACHETER" },
+  { label: "A INJECTER" },
 ];
 
 export const MEDICATION_NAME = [
-
   { label: "ASPIRINE" },
   { label: "IBUPROFÈNE" },
   { label: "PARACÉTAMOL" },
@@ -90,8 +89,12 @@ const AddForm = ({ patientId: consultationId }) => {
       </div>
     );
   }
-  const consult = consultations?.find((patient) => patient.id === consultationId);
-  const patient = consultations?.find((patient) => patient.id === consultationId)?.patient;
+  const consult = consultations?.find(
+    (patient) => patient.id === consultationId
+  );
+  const patient = consultations?.find(
+    (patient) => patient.id === consultationId
+  )?.patient;
   return (
     <>
       <div>
@@ -137,6 +140,31 @@ const AddForm = ({ patientId: consultationId }) => {
                 </pre>
               </div>
             </div>
+            <Typography variant="h4">Constantes du patient</Typography>
+            <Stack
+              direction="row"
+              spacing={6}
+              alignItems="center"
+              justifyContent="space-between"
+              m={2}
+              mb={2}
+            >
+              <Typography>
+                Taille : <b>{patient?.constant?.height}</b>
+              </Typography>
+              <Typography>
+                Poids : <b>{patient?.constant?.weight}</b>
+              </Typography>
+              <Typography>
+                Température : <b>{patient?.constant?.temperature}</b>
+              </Typography>
+              <Typography>
+                Pression artérielle : <b>{patient?.constant?.bloodPression}</b>
+              </Typography>
+              <Typography>
+                Fréquence cardiaque : <b>{patient?.constant?.heartRate}</b>
+              </Typography>
+            </Stack>
           </CardContent>
         </Card>
       </div>
@@ -268,9 +296,7 @@ const AddForm = ({ patientId: consultationId }) => {
 
               <Grid item xs={12} md={4}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="dosage-add">
-                    Dosage*
-                  </InputLabel>
+                  <InputLabel htmlFor="dosage-add">Dosage*</InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.dosage && errors.dosage)}

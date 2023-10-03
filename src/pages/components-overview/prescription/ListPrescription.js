@@ -3,14 +3,12 @@ import { DataGrid } from "@mui/x-data-grid";
 import { GridToolbarContainer } from "@mui/x-data-grid/components/containers/GridToolbarContainer";
 import { GridToolbarExport } from "@mui/x-data-grid/components/toolbar/GridToolbarExport";
 import { IconButton, Button } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { MEDICATION_NAME, PRESCRIPTION_TYPE } from "./AddPrescriptionForm";
-import { ConsultationService } from "../../../provider/consultation.provider";
 import { TableContext } from "../../context/PatientContext";
 import { fDate, fDateSpaceTime } from "../../../utils/formatTime";
+import { PrescriptionService } from "../../../provider/prescription.provider";
 
 const handleEditClick = (id) => {
   // Ajoutez votre logique pour gérer l'édition d'une ligne avec l'ID donné.
@@ -31,43 +29,43 @@ const columns = [
     sortable: true,
     width: 140,
   },
-  { field: "patient", headerName: "Consultation", width: 130 },
-  { field: "reason", headerName: "Motif de la consultation", width: 200 },
+  { field: "patient", headerName: "Patient", width: 130 },
   {
     field: "type",
-    headerName: "Ant. Type maladie",
-    width: 200,
+    headerName: "Type",
+    width: 140,
   },
+  { field: "reason", headerName: "Motif de la consultation", width: 200 },
   {
-    field: "startingDate",
-    headerName: "Début du traitement",
-    // description: "This column has a value getter and is not sortable.",
-    sortable: true,
-    width: 130,
-    // editMode: "row",
-    editable: true,
-  },
-  {
-    field: "closingDate",
-    headerName: "Fin du traitement",
-    // description: "This column has a value getter and is not sortable.",
-    sortable: true,
-    width: 130,
-    editMode: "row",
-    editable: true,
-  },
-  {
-    field: "phone",
-    headerName: "Téléphone du patient",
+    field: "name",
+    headerName: "Médicament",
     // description: "This column has a value getter and is not sortable.",
     sortable: true,
     width: 140,
   },
   {
+    field: "dosage",
+    headerName: "Dosage",
+    // description: "This column has a value getter and is not sortable.",
+    sortable: true,
+    width: 200,
+    editMode: "row",
+    editable: true,
+  },
+  {
+    field: "observation",
+    headerName: "Observation",
+    // description: "This column has a value getter and is not sortable.",
+    sortable: true,
+    width: 200,
+    editMode: "row",
+    editable: true,
+  },
+  {
     field: "actions",
     headerName: "Actions",
     sortable: false,
-    width: 160,
+    width: 80,
     renderCell: (params) => (
       <>
         <IconButton
@@ -78,111 +76,10 @@ const columns = [
         >
           <EditIcon />
         </IconButton>
-        {/* <IconButton
-          color="red"
-          aria-label="Delete"
-          component="span"
-          onClick={() => handleDeleteClick(params.id)}
-        >
-          <DeleteIcon />
-        </IconButton> */}
       </>
     ),
   },
 ];
-
-// export const rows = [
-//   {
-//     id: 1,
-//     patient: "Snow Jon",
-//     reason: PRESCRIPTION_TYPE[0].label,
-//     type: MEDICATION_NAME[0].label,
-//     startingDate: "2022-12-05",
-//     closingDate: "2022-12-05",
-//     phone: "+2258710078",
-//     actions: "r",
-//   },
-//   {
-//     id: 2,
-//     patient: "Lannister Cersei",
-//     reason: PRESCRIPTION_TYPE[1].label,
-//     type: MEDICATION_NAME[0].label,
-//     startingDate: "2022-12-05",
-//     closingDate: "2022-12-05",
-//     phone: "+2258710078",
-//     actions: "r",
-//   },
-//   {
-//     id: 3,
-//     patient: "Lannister Jaime",
-//     reason: PRESCRIPTION_TYPE[0].label,
-//     type: MEDICATION_NAME[2].label,
-//     startingDate: "2022-12-05",
-//     closingDate: "2022-12-05",
-//     phone: "+2258710078",
-//     actions: "r",
-//   },
-//   {
-//     id: 4,
-//     patient: "Stark Arya",
-//     reason: PRESCRIPTION_TYPE[0].label,
-//     type: MEDICATION_NAME[0].label,
-//     startingDate: "2022-12-05",
-//     closingDate: "2022-12-05",
-//     phone: "+2258710078",
-//     actions: "r",
-//   },
-//   {
-//     id: 5,
-//     patient: "Targaryen Daenerys",
-//     reason: PRESCRIPTION_TYPE[1].label,
-//     type: MEDICATION_NAME[3].label,
-//     startingDate: "2022-12-05",
-//     closingDate: "2022-12-05",
-//     phone: "+2258710078",
-//     actions: "r",
-//   },
-//   {
-//     id: 6,
-//     patient: "Melisandre Winner",
-//     reason: PRESCRIPTION_TYPE[2].label,
-//     type: MEDICATION_NAME[0].label,
-//     startingDate: "2022-12-05",
-//     closingDate: "2022-12-05",
-//     phone: "+2258710078",
-//     actions: "r",
-//   },
-//   {
-//     id: 7,
-//     patient: "Clifford Ferrara",
-//     reason: PRESCRIPTION_TYPE[3].label,
-//     type: MEDICATION_NAME[1].label,
-//     startingDate: "2022-12-05",
-//     closingDate: "2022-12-05",
-//     phone: "+2258710078",
-//     actions: "r",
-//   },
-//   {
-//     id: 8,
-//     patient: "Frances Rossini",
-//     reason: PRESCRIPTION_TYPE[2].label,
-//     type: MEDICATION_NAME[0].label,
-//     startingDate: "2022-12-05",
-//     closingDate: "2022-12-05",
-//     phone: "+2258710078",
-//     actions: "r",
-//   },
-//   {
-//     id: 9,
-//     patient: "Roxie Harvey",
-//     reason: PRESCRIPTION_TYPE[4].label,
-//     type: MEDICATION_NAME[5].label,
-//     startingDate: "2022-12-05",
-//     closingDate: "2022-12-05",
-//     phone: "+2258710078",
-//     actions: "r",
-//   },
-// ];
 
 function PDF() {
   const { rows } = useContext(TableContext);
@@ -196,18 +93,18 @@ function PDF() {
     }
   });
   const body = rows.map((item) => {
-    const { createdAt, patient, type, reason, startingDate, phone, closingDate } = item;
+    const { createdAt, patient, type, reason, dosage, name, observation } = item;
 
-    return [createdAt, patient, type, reason, startingDate, phone, closingDate];
+    return [createdAt, patient, type, reason, dosage, name, observation];
   });
   const downloadList = () => {
     autoTable(patientsList, {
       head: [headerName],
       body: body,
     });
-    patientsList.text("LISTE DES CONSULTATIONS", 14, 12);
+    patientsList.text("LISTE DES ORDONNANCES", 14, 12);
     patientsList.text("", 14, 20);
-    patientsList.save(`liste_des_consultations.pdf`);
+    patientsList.save(`liste_des_ordonnances.pdf`);
   };
 
   return (
@@ -240,43 +137,41 @@ export function CustomToolbar() {
   );
 }
 const ListPrescription = () => {
-  const [consultations, setConsultations] = useState([]);
+  const [prescriptions, setPrescriptions] = useState([]);
 
   useEffect(() => {
-    getConsultations();
+    getPrescriptions();
   }, []);
 
-  const getConsultations = () => {
-    ConsultationService.getConsultations().then((res) => {
+  const getPrescriptions = () => {
+    PrescriptionService.getPrescriptions().then((res) => {
       if (res && Array.isArray(res)) {
-        setConsultations(res);
+        setPrescriptions(res);
       }
     });
   };
   const fullname = (patient) => {
     if (patient) return `${patient.firstName} ${patient.lastName}`;
   };
-  const formatConsultations = consultations?.map((consult) => ({
-    id: consult.id,
-    reason: consult.reason,
-    patient: fullname(consult.patient),
-    type: consult.history?.type,
-    phone: consult.patient?.phone,
-    startingDate: fDate(consult.history?.startingDate),
-    closingDate: fDate(consult.history?.closingDate),
-    observation: consult.history?.observation,
-    description: consult.history?.description,
-    createdAt: fDateSpaceTime(consult.createdAt)
+  const formatPrescriptions = prescriptions?.map((ordo) => ({
+    id: ordo.id,
+    reason: ordo.consultation?.reason,
+    patient: fullname(ordo?.consultation?.patient),
+    type: ordo?.type,
+    name: ordo.medication?.name,
+    dosage: ordo.medication?.dosage,
+    observation: ordo?.observation,
+    createdAt: fDateSpaceTime(ordo.createdAt)
   }));
   return (
-    <TableContext.Provider value={{ rows: formatConsultations }}>
+    <TableContext.Provider value={{ rows: formatPrescriptions }}>
       <div style={{ height: 500, width: "100%" }}>
         <DataGrid
           slots={{
             toolbar: CustomToolbar,
           }}
           editMode="row"
-          rows={formatConsultations}
+          rows={formatPrescriptions}
           columns={columns}
           initialState={{
             pagination: {

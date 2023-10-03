@@ -31,12 +31,12 @@ const columns = [
     sortable: true,
     width: 140,
   },
-  { field: "patient", headerName: "Consultation", width: 130 },
+  { field: "patient", headerName: "Patient", width: 130 },
   { field: "reason", headerName: "Motif de la consultation", width: 200 },
   {
     field: "type",
     headerName: "Ant. Type maladie",
-    width: 200,
+    width: 140,
   },
   {
     field: "startingDate",
@@ -61,13 +61,13 @@ const columns = [
     headerName: "Téléphone du patient",
     // description: "This column has a value getter and is not sortable.",
     sortable: true,
-    width: 140,
+    width: 120,
   },
   {
     field: "actions",
     headerName: "Actions",
     sortable: false,
-    width: 160,
+    width: 40,
     renderCell: (params) => (
       <>
         <IconButton

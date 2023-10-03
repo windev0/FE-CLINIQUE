@@ -353,7 +353,7 @@ const AddForm = ({ patientId }) => {
                 </Stack>
               </Grid>
 
-              <Grid item xs={12} md={4}>
+              <Grid item xs={4} md={4}>
                 <Stack spacing={1}>
                   <InputLabel htmlFor="phone-add">
                     Téléphone du médecin soignant*
