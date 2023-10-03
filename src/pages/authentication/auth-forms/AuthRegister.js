@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 
 // material-ui
 import {
@@ -16,32 +16,38 @@ import {
   OutlinedInput,
   Stack,
   Typography,
-  Select
-} from '@mui/material';
+  Select,
+} from "@mui/material";
 
 // third party
-import * as Yup from 'yup';
-import { Formik } from 'formik';
+import * as Yup from "yup";
+import { Formik } from "formik";
 
 // project import
-import FirebaseSocial from './FirebaseSocial';
-import AnimateButton from 'components/@extended/AnimateButton';
-import { strengthColor, strengthIndicator } from 'utils/password-strength';
+import FirebaseSocial from "./FirebaseSocial";
+import AnimateButton from "components/@extended/AnimateButton";
+import { strengthColor, strengthIndicator } from "utils/password-strength";
 
 // assets
-import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-import { MenuItem } from '../../../../node_modules/@mui/material/index';
+import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
+import { MenuItem } from "../../../../node_modules/@mui/material/index";
 // import { useQuery } from '../../../../node_modules/@tanstack/react-query/build/lib/useQuery';
-import axios from '../../../../node_modules/axios/index';
+import axios from "../../../../node_modules/axios/index";
+import { useNavigate } from "../../../../node_modules/react-router-dom/dist/index";
 
 // ============================|| FIREBASE - REGISTER ||============================ //
 
 const AuthRegister = () => {
+  const navigate = useNavigate("/login");
   const [level, setLevel] = useState();
   const [showPassword, setShowPassword] = useState(false);
   const userType = {
-    doctor: 'MEDECIN',
-    nurse: 'INFIRMIER'
+    doctor: "MEDECIN",
+    nurse: "INFIRMIER",
+  };
+  const sex = {
+    male: "MASCULIN",
+    female: "FEMININ",
   };
 
   const handleClickShowPassword = () => {
@@ -59,52 +65,66 @@ const AuthRegister = () => {
 
   const handleType = (type) => {
     return type;
-  }
+  };
   useEffect(() => {
-    changePassword('');
+    changePassword("");
   }, []);
 
-  // const { isLoading, error, data } = useQuery({
-  //   queryKey: ['repoData'],
-  //   queryFn: () => handleSubmit()
-  // })
   const OhandleSubmit = (values) => {
     const user = {
       firstName: values.firstname,
       lastName: values.lastname,
-      address: values.address, 
+      address: values.address,
       password: values.password,
       email: values.email,
-      type: values.type
-    }
-    console.log('user: ',user)
-    axios.post('http://localhost:3001/auth/register', user)
-      .then((response) => console.log(response))
+      type: values.type,
+      sex: values.sex,
+      phone: values.phone,
+    };
+    console.log("user: ", user);
+    axios
+      .post("http://localhost:3001/auth/register", user)
+      .then((response) => {
+        navigate('/login'), console.log(response);
+      })
       .catch(function (error) {
         console.log(error);
       });
 
-    console.log(values)
-  }
+    console.log(values);
+  };
 
   return (
     <>
       <Formik
         initialValues={{
-          firstname: '',
-          lastname: '',
-          email: '',
-          address: '',
-          password: '',
-          type: '',
-          submit: null
+          firstname: "",
+          lastname: "",
+          sex: "",
+          email: "",
+          address: "",
+          password: "",
+          type: "",
+          phone: "",
+          submit: null,
         }}
         validationSchema={Yup.object().shape({
-          firstname: Yup.string().max(255).required('Le nom est obligatoire'),
-          lastname: Yup.string().max(255).required('Le prénom est obligatoire'),
-          type: Yup.string().max(255).required("Le type d'utilisateur est obligatoire"),
-          email: Yup.string().email('Doit etre un email valide').max(255).required('Email est obligatoire'),
-          password: Yup.string().max(255).required('Mot de passe est obligatoire')
+          firstname: Yup.string().max(255).required("Le nom est obligatoire"),
+          lastname: Yup.string().max(255).required("Le prénom est obligatoire"),
+          sex: Yup.string().max(255).required("Le sexe est obligatoire"),
+          type: Yup.string()
+            .max(255)
+            .required("Le type d'utilisateur est obligatoire"),
+          email: Yup.string()
+            .email("Doit etre un email valide")
+            .max(255)
+            .required("Email est obligatoire"),
+          password: Yup.string()
+            .max(255)
+            .required("Mot de passe est obligatoire"),
+          phone: Yup.string()
+            .max(255)
+            .required("Le numéro de téléphone est obligatoire"),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
@@ -118,8 +138,21 @@ const AuthRegister = () => {
           }
         }}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-          <form noValidate onSubmit={handleSubmit} method='POST' action='submit'>
+        {({
+          errors,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          isSubmitting,
+          touched,
+          values,
+        }) => (
+          <form
+            noValidate
+            onSubmit={handleSubmit}
+            method="POST"
+            action="submit"
+          >
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
                 <Stack spacing={1}>
@@ -166,6 +199,53 @@ const AuthRegister = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Stack spacing={1}>
+                  <InputLabel htmlFor="sex-signup">Sexe*</InputLabel>
+                  <Select
+                    fullWidth
+                    labelId="Sexe"
+                    id="sex-signup"
+                    // value=
+                    label="sex"
+                    name="sex"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    inputProps={{}}
+                  >
+                    <MenuItem value={handleType(sex.male)}>{sex.male}</MenuItem>
+                    <MenuItem value={handleType(sex.female)}>
+                      {sex.female}
+                    </MenuItem>
+                  </Select>
+                  {touched.sex && errors.sex && (
+                    <FormHelperText error id="helper-text-sex-signup">
+                      {errors.sex}
+                    </FormHelperText>
+                  )}
+                </Stack>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Stack spacing={1}>
+                  <InputLabel htmlFor="phone-add">Téléphone*</InputLabel>
+                  <OutlinedInput
+                    fullWidth
+                    error={Boolean(touched.phone && errors.phone)}
+                    id="phone-add"
+                    name="phone"
+                    value={values.phone}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    placeholder="+22899782841"
+                    inputProps={{}}
+                  />
+                  {touched.phone && errors.phone && (
+                    <FormHelperText error id="helper-text-phone-add">
+                      {errors.phone}
+                    </FormHelperText>
+                  )}
+                </Stack>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Stack spacing={1}>
                   <InputLabel htmlFor="address-signup">Address</InputLabel>
                   <OutlinedInput
                     fullWidth
@@ -187,8 +267,11 @@ const AuthRegister = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="Type-signup">Type d{`'`}utilisateur</InputLabel>
-                  <Select fullWidth
+                  <InputLabel htmlFor="Type-signup">
+                    Type d{`'`}utilisateur
+                  </InputLabel>
+                  <Select
+                    fullWidth
                     labelId="Type d'utilisateur"
                     id="UserType-signup"
                     // value=
@@ -198,8 +281,12 @@ const AuthRegister = () => {
                     onChange={handleChange}
                     inputProps={{}}
                   >
-                    <MenuItem value={handleType(userType.doctor)}>{userType.doctor}</MenuItem>
-                    <MenuItem value={handleType(userType.nurse)}>{userType.nurse}</MenuItem>
+                    <MenuItem value={handleType(userType.doctor)}>
+                      {userType.doctor}
+                    </MenuItem>
+                    <MenuItem value={handleType(userType.nurse)}>
+                      {userType.nurse}
+                    </MenuItem>
                   </Select>
 
                   {touched.type && errors.type && (
@@ -233,12 +320,14 @@ const AuthRegister = () => {
               </Grid>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="password-signup">Mot de passe</InputLabel>
+                  <InputLabel htmlFor="password-signup">
+                    Mot de passe
+                  </InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.password && errors.password)}
                     id="password-signup"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     value={values.password}
                     name="password"
                     onBlur={handleBlur}
@@ -255,7 +344,11 @@ const AuthRegister = () => {
                           edge="end"
                           size="large"
                         >
-                          {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+                          {showPassword ? (
+                            <EyeOutlined />
+                          ) : (
+                            <EyeInvisibleOutlined />
+                          )}
                         </IconButton>
                       </InputAdornment>
                     }
@@ -271,7 +364,14 @@ const AuthRegister = () => {
                 <FormControl fullWidth sx={{ mt: 2 }}>
                   <Grid container spacing={2} alignItems="center">
                     <Grid item>
-                      <Box sx={{ bgcolor: level?.color, width: 85, height: 8, borderRadius: '7px' }} />
+                      <Box
+                        sx={{
+                          bgcolor: level?.color,
+                          width: 85,
+                          height: 8,
+                          borderRadius: "7px",
+                        }}
+                      />
                     </Grid>
                     <Grid item>
                       <Typography variant="subtitle1" fontSize="0.75rem">
@@ -283,7 +383,7 @@ const AuthRegister = () => {
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2">
-                  j{`'`}accepte les   &nbsp;
+                  j{`'`}accepte les &nbsp;
                   <Link variant="subtitle2" component={RouterLink} to="#">
                     conditions d{`'`}utilisation
                   </Link>
@@ -300,7 +400,16 @@ const AuthRegister = () => {
               )}
               <Grid item xs={12}>
                 <AnimateButton>
-                  <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" onClick={() => OhandleSubmit(values)} variant="contained" color="primary">
+                  <Button
+                    disableElevation
+                    disabled={isSubmitting}
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    onClick={() => OhandleSubmit(values)}
+                    variant="contained"
+                    color="primary"
+                  >
                     Créer maintenant
                   </Button>
                 </AnimateButton>
@@ -318,7 +427,6 @@ const AuthRegister = () => {
         )}
       </Formik>
     </>
-
   );
 };
 

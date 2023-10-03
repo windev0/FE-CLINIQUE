@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
-import { useRef, useState } from 'react';
+import PropTypes from "prop-types";
+import { useContext, useRef, useState } from "react";
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from "@mui/material/styles";
 import {
   Avatar,
   Box,
@@ -16,23 +16,38 @@ import {
   Stack,
   Tab,
   Tabs,
-  Typography
-} from '@mui/material';
+  Typography,
+} from "@mui/material";
 
 // project import
-import MainCard from 'components/MainCard';
-import Transitions from 'components/@extended/Transitions';
-import ProfileTab from './ProfileTab';
-import SettingTab from './SettingTab';
+import MainCard from "components/MainCard";
+import Transitions from "components/@extended/Transitions";
+import ProfileTab from "./ProfileTab";
+import SettingTab from "./SettingTab";
 
 // assets
-import avatar1 from 'assets/images/users/avatar-3.png';
-import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import avatar1 from "assets/images/users/avatar-3.png";
+import {
+  LogoutOutlined,
+  SettingOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import { USER_CONTEXT } from "pages/context/UserContext";
+import { PATIENT_CONTEXT } from "pages/context/PatientContext";
+import axios from "../../../../../../node_modules/axios/index";
+import { useNavigate } from "../../../../../../node_modules/react-router-dom/dist/index";
+import { CommonData } from "utils/common";
 
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
   return (
-    <div role="tabpanel" hidden={value !== index} id={`profile-tabpanel-${index}`} aria-labelledby={`profile-tab-${index}`} {...other}>
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`profile-tabpanel-${index}`}
+      aria-labelledby={`profile-tab-${index}`}
+      {...other}
+    >
       {value === index && children}
     </div>
   );
@@ -41,13 +56,13 @@ function TabPanel({ children, value, index, ...other }) {
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired
+  value: PropTypes.any.isRequired,
 };
 
 function a11yProps(index) {
   return {
     id: `profile-tab-${index}`,
-    'aria-controls': `profile-tabpanel-${index}`
+    "aria-controls": `profile-tabpanel-${index}`,
   };
 }
 
@@ -55,9 +70,12 @@ function a11yProps(index) {
 
 const Profile = () => {
   const theme = useTheme();
+  const { user } = useContext(PATIENT_CONTEXT);
+  const { firstName, lastName, type } = user;
+  const navigate = useNavigate("/login");
 
   const handleLogout = async () => {
-    // logout
+    navigate("/login");
   };
 
   const anchorRef = useRef(null);
@@ -79,26 +97,32 @@ const Profile = () => {
     setValue(newValue);
   };
 
-  const iconBackColorOpen = 'grey.300';
+  const iconBackColorOpen = "grey.300";
 
   return (
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
       <ButtonBase
         sx={{
           p: 0.25,
-          bgcolor: open ? iconBackColorOpen : 'transparent',
+          bgcolor: open ? iconBackColorOpen : "transparent",
           borderRadius: 1,
-          '&:hover': { bgcolor: 'secondary.lighter' }
+          "&:hover": { bgcolor: "secondary.lighter" },
         }}
         aria-label="open profile"
         ref={anchorRef}
-        aria-controls={open ? 'profile-grow' : undefined}
+        aria-controls={open ? "profile-grow" : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
       >
         <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
-          <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
-          <Typography variant="subtitle1">AWOUNO Winner</Typography>
+          <Avatar
+            alt="profile user"
+            src={avatar1}
+            sx={{ width: 32, height: 32 }}
+          />
+          <Typography variant="subtitle1">
+            {`${firstName} ${lastName}`}
+          </Typography>
         </Stack>
       </ButtonBase>
       <Popper
@@ -111,12 +135,12 @@ const Profile = () => {
         popperOptions={{
           modifiers: [
             {
-              name: 'offset',
+              name: "offset",
               options: {
-                offset: [0, 9]
-              }
-            }
-          ]
+                offset: [0, 9],
+              },
+            },
+          ],
         }}
       >
         {({ TransitionProps }) => (
@@ -128,28 +152,46 @@ const Profile = () => {
                   width: 290,
                   minWidth: 240,
                   maxWidth: 290,
-                  [theme.breakpoints.down('md')]: {
-                    maxWidth: 250
-                  }
+                  [theme.breakpoints.down("md")]: {
+                    maxWidth: 250,
+                  },
                 }}
               >
                 <ClickAwayListener onClickAway={handleClose}>
                   <MainCard elevation={0} border={false} content={false}>
                     <CardContent sx={{ px: 2.5, pt: 3 }}>
-                      <Grid container justifyContent="space-between" alignItems="center">
+                      <Grid
+                        container
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
                         <Grid item>
-                          <Stack direction="row" spacing={1.25} alignItems="center">
-                            <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
+                          <Stack
+                            direction="row"
+                            spacing={1.25}
+                            alignItems="center"
+                          >
+                            <Avatar
+                              alt="profile user"
+                              src={avatar1}
+                              sx={{ width: 32, height: 32 }}
+                            />
                             <Stack>
-                              <Typography variant="h6">AWOUNO Winner</Typography>
+                              <Typography variant="h6">
+                                {`${firstName} ${lastName}`}
+                              </Typography>
                               <Typography variant="body2" color="textSecondary">
-                                UI/UX Designer
+                                {`${type}`}
                               </Typography>
                             </Stack>
                           </Stack>
                         </Grid>
                         <Grid item>
-                          <IconButton size="large" color="secondary" onClick={handleLogout}>
+                          <IconButton
+                            size="large"
+                            color="secondary"
+                            onClick={handleLogout}
+                          >
                             <LogoutOutlined />
                           </IconButton>
                         </Grid>
@@ -157,29 +199,48 @@ const Profile = () => {
                     </CardContent>
                     {open && (
                       <>
-                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                          <Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="profile tabs">
+                        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                          <Tabs
+                            variant="fullWidth"
+                            value={value}
+                            onChange={handleChange}
+                            aria-label="profile tabs"
+                          >
                             <Tab
                               sx={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                textTransform: 'capitalize'
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                textTransform: "capitalize",
                               }}
-                              icon={<UserOutlined style={{ marginBottom: 0, marginRight: '10px' }} />}
+                              icon={
+                                <UserOutlined
+                                  style={{
+                                    marginBottom: 0,
+                                    marginRight: "10px",
+                                  }}
+                                />
+                              }
                               label="Profile"
                               {...a11yProps(0)}
                             />
                             <Tab
                               sx={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                textTransform: 'capitalize'
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                textTransform: "capitalize",
                               }}
-                              icon={<SettingOutlined style={{ marginBottom: 0, marginRight: '10px' }} />}
+                              icon={
+                                <SettingOutlined
+                                  style={{
+                                    marginBottom: 0,
+                                    marginRight: "10px",
+                                  }}
+                                />
+                              }
                               label="Setting"
                               {...a11yProps(1)}
                             />
