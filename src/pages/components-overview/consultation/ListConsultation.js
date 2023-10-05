@@ -196,9 +196,9 @@ function PDF() {
     }
   });
   const body = rows.map((item) => {
-    const { createdAt, patient, type, reason, startingDate, phone, closingDate } = item;
+    const { createdAt, patient, type, reason, startingDate, closingDate, phone } = item;
 
-    return [createdAt, patient, type, reason, startingDate, phone, closingDate];
+    return [createdAt, patient, type, reason, startingDate, closingDate, phone];
   });
   const downloadList = () => {
     autoTable(patientsList, {

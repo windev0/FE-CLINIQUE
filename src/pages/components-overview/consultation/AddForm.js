@@ -104,14 +104,14 @@ const AddForm = ({ patientId }) => {
                 <pre>Nom:</pre>
                 <pre>
                   {" "}
-                  <b>{patient?.lastName}</b>
+                  <b>{patient?.firstName}</b>
                 </pre>
               </div>
               <div style={{ display: "flex", marginLeft: 35 }}>
                 <pre>Prénom(s):</pre>
                 <pre>
                   {" "}
-                  <b>{patient?.firstName}</b>
+                  <b>{patient?.lastName}</b>
                 </pre>
               </div>
               <div style={{ display: "flex", marginLeft: 35 }}>

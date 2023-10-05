@@ -191,10 +191,10 @@ function PDF() {
     }
   });
   const body = rows?.map((item) => {
-    const { lastName, firstName, job, sex, maritalStatus, phone, createdAt } =
+    const {firstName, lastName,  job, sex, maritalStatus, phone, createdAt } =
       item;
 
-    return [lastName, firstName, job, sex, maritalStatus, phone, createdAt];
+    return [firstName, lastName, job, sex, maritalStatus, phone, createdAt];
   });
   const downloadList = () => {
     autoTable(patientsList, {
