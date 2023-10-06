@@ -9,7 +9,7 @@ import { Stack, TextField, Autocomplete } from "@mui/material";
 const AddPrescription = () => {
   const [consultations, setConsultations] = useState([]);
   const [patients, setPatients] = useState([]);
-  const [patientId, setPatient] = useState();
+  const [patientId, setPatient] = useState(1);
 
   useEffect(() => {
     getConsultations();

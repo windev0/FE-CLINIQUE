@@ -21,7 +21,7 @@ const AddConsultation = () => {
   };
   const patientsName = patients.map((item) => {
     const { firstName, lastName, id } = item;
-    return { label: `${firstName} ${lastName}`, id: id };
+    return { label: `${firstName} ${lastName} | 0014`, id: id };
   });
 
   const [value, setValue] = useState();
