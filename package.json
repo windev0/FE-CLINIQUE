@@ -1,8 +1,8 @@
 {
+  "homepage" : "https://windev0.github.io/FE-CLINIQUE",
   "name": "clinique",
   "version": "1.1.2",
   "private": true,
-  "homepage": "https://mantisdashboard.io/clinique",
   "dependencies": {
     "@ant-design/colors": "^6.0.0",
     "@ant-design/icons": "^4.7.0",
@@ -53,6 +53,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "deploy" : "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -92,6 +93,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "gh-pages": "^6.0.0",
     "prettier": "^2.8.7"
   }
 }
